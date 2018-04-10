@@ -5,8 +5,42 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PackageChecker"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
-    </Grid>
+        Title="Package Checker" Height="650" Width="850" MinHeight="350" MinWidth="450">
+	<DockPanel Margin="10">
+		<DockPanel Name="PathPanel" DockPanel.Dock="Top">
+			<Button Name="SelectionCancel" Margin="5" Width="30" Height="30" DockPanel.Dock="Right">✖</Button>
+			<TextBox Name="PathTextBox" IsReadOnly="True" Margin="5" MaxLines="1"></TextBox>
+		</DockPanel>
+		<StackPanel Name="ChoosePanel" Orientation="Horizontal" HorizontalAlignment="Center" DockPanel.Dock="Top">
+			<Button Name="ArchiveChoose" Margin="5" Width="150" Height="30">Choose archive</Button>
+			<Button Name="FolderChoose" Margin="5" Width="150" Height="30">Choose folder</Button>
+		</StackPanel>
+		<Border BorderBrush="Gray" BorderThickness="1" Margin="5" Padding="5" DockPanel.Dock="Top">
+			<Expander Header="Filtering expressions">
+				<DockPanel Name="FilterPanel">
+					<StackPanel DockPanel.Dock="Bottom">
+						<ListBox Name="ListFilterExpressions" />
+					</StackPanel>
+					<TextBlock Margin="5" DockPanel.Dock="Left" VerticalAlignment="Center">Filter expression</TextBlock>
+					<Button Name="RemoveFilter" Margin="5" Width="20" Height="20" DockPanel.Dock="Right">✗</Button>
+					<Button Name="EditFilter" Margin="5" Width="20" Height="20" DockPanel.Dock="Right" VerticalAlignment="Center">✎</Button>
+					<Button Name="AddFilter" Margin="5" Width="20" Height="20" DockPanel.Dock="Right" VerticalAlignment="Center">✓</Button>
+					<TextBox Name="FilterExpression" Margin="5" MaxLines="1" VerticalAlignment="Center"></TextBox>
+				</DockPanel>
+			</Expander>
+		</Border>
+		<DockPanel DockPanel.Dock="Top">
+			<Button Name="RunSearch" Margin="5" Width="25" Height="25" DockPanel.Dock="Left">🔎</Button>
+			<TextBlock Name="InfoText" Margin="5" VerticalAlignment="Center">Files shown: 0. Files hidden: 0.</TextBlock>
+		</DockPanel>
+		<ListView Name="FilesList" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+			<ListView.View>
+				<GridView>
+					<GridViewColumn Header="Product Version" Width="220" DisplayMemberBinding="{Binding ProductVersion}" />
+					<GridViewColumn Header="File Version" Width="140" DisplayMemberBinding="{Binding FileVersion}" />
+					<GridViewColumn Header="File Path" Width="420" DisplayMemberBinding="{Binding FilePath}" />
+				</GridView>
+			</ListView.View>
+		</ListView>
+	</DockPanel>
 </Window>
