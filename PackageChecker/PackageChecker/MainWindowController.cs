@@ -35,6 +35,19 @@ namespace PackageChecker
 			windowState = WindowState.ZipFile;
 		}
 
+		public void SetFolderState(string path)
+		{
+			SetPathMode();
+
+			if (PathValue != path)
+			{
+				PathValue = path;
+				PropertyChanged(this, new PropertyChangedEventArgs("PathValue"));
+			}
+
+			windowState = WindowState.Folder;
+		}
+
 		private void InitializeWindow()
 		{
 			SetChooseMode();

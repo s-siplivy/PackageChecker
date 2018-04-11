@@ -38,5 +38,14 @@ namespace PackageChecker
 				controller.SetZipState(fileName);
 			}
 		}
+
+		private void FolderChoose_Click(object sender, RoutedEventArgs e)
+		{
+			string folderPath = PickerDialog.PickFolderDialog();
+			if (!string.IsNullOrEmpty(folderPath))
+			{
+				controller.SetFolderState(folderPath);
+			}
+		}
 	}
 }

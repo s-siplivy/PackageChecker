@@ -27,5 +27,20 @@ namespace PackageChecker.FileSystem
 				return string.Empty;
 			}
 		}
+
+		public static string PickFolderDialog()
+		{
+			using (var fileDialog = new FolderBrowserDialog())
+			{
+				DialogResult result = fileDialog.ShowDialog();
+
+				if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fileDialog.SelectedPath))
+				{
+					return fileDialog.SelectedPath;
+				}
+
+				return string.Empty;
+			}
+		}
 	}
 }
