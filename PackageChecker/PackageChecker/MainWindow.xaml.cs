@@ -58,6 +58,10 @@ namespace PackageChecker
 			controller.AddFilteringExpression();
 		}
 
+		private void EditFilter_Click(object sender, RoutedEventArgs e)
+		{
+			controller.EditFilteringExpression();
+		}
 		private void RemoveFilter_Click(object sender, RoutedEventArgs e)
 		{
 			controller.RemoveFilteringExpression();

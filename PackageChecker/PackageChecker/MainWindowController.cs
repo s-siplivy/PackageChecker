@@ -80,6 +80,20 @@ namespace PackageChecker
 			}
 		}
 
+		public void EditFilteringExpression()
+		{
+			try
+			{
+				int index = window.ListFilterExpressions.SelectedIndex;
+				CurrentFilteringExpression = filteringManager.EditExpression(index);
+				PropertyChanged(this, new PropertyChangedEventArgs("CurrentFilteringExpression"));
+			}
+			catch (ArgumentException e)
+			{
+				ShowMessage(e.Message, "Error");
+			}
+		}
+
 		public void RemoveFilteringExpression()
 		{
 			try

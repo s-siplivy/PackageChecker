@@ -38,6 +38,23 @@ namespace PackageChecker.WindowManagement
 
 			expressions.Add(expression);
 		}
+		public string EditExpression(int index)
+		{
+			if (index < 0)
+			{
+				throw new ArgumentException("Expression isn't selected.");
+			}
+
+			if (index >= expressions.Count)
+			{
+				throw new ArgumentException("Selection error.");
+			}
+
+			string expression = expressions[index];
+			expressions.RemoveAt(index);
+
+			return expression;
+		}
 
 		public void RemoveExpression(int index)
 		{
