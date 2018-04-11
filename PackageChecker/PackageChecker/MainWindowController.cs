@@ -80,6 +80,18 @@ namespace PackageChecker
 			}
 		}
 
+		public void RemoveFilteringExpression()
+		{
+			try
+			{
+				filteringManager.RemoveExpression(window.ListFilterExpressions.SelectedIndex);
+			}
+			catch (ArgumentException e)
+			{
+				ShowMessage(e.Message, "Error");
+			}
+		}
+
 		private void InitializeWindow()
 		{
 			SetChooseMode();

@@ -39,6 +39,21 @@ namespace PackageChecker.WindowManagement
 			expressions.Add(expression);
 		}
 
+		public void RemoveExpression(int index)
+		{
+			if (index < 0)
+			{
+				throw new ArgumentException("Expression isn't selected.");
+			}
+
+			if (index >= expressions.Count)
+			{
+				throw new ArgumentException("Selection error.");
+			}
+
+			expressions.RemoveAt(index);
+		}
+
 		protected KeyValuePair<string, string> ParseExpression(string expression)
 		{
 			string key = expression.Substring(0, 2);

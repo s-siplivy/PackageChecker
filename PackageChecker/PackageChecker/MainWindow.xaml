@@ -22,7 +22,7 @@
 						<ListBox Name="ListFilterExpressions" ItemsSource="{Binding Path=FilteringExpressions}" />
 					</StackPanel>
 					<TextBlock Margin="5" DockPanel.Dock="Left" VerticalAlignment="Center">Filter expression</TextBlock>
-					<Button Name="RemoveFilter" Margin="5" Width="20" Height="20" DockPanel.Dock="Right">✗</Button>
+					<Button Name="RemoveFilter" Margin="5" Width="20" Height="20" DockPanel.Dock="Right" Click="RemoveFilter_Click">✗</Button>
 					<Button Name="EditFilter" Margin="5" Width="20" Height="20" DockPanel.Dock="Right" VerticalAlignment="Center">✎</Button>
 					<Button Name="AddFilter" Margin="5" Width="20" Height="20" DockPanel.Dock="Right" VerticalAlignment="Center" Click="AddFilter_Click">✓</Button>
 					<TextBox Name="FilterExpression" Margin="5" MaxLines="1" VerticalAlignment="Center" Text="{Binding CurrentFilteringExpression}"></TextBox>

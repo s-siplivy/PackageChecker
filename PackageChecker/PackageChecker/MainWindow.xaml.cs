@@ -57,5 +57,10 @@ namespace PackageChecker
 		{
 			controller.AddFilteringExpression();
 		}
+
+		private void RemoveFilter_Click(object sender, RoutedEventArgs e)
+		{
+			controller.RemoveFilteringExpression();
+		}
 	}
 }
