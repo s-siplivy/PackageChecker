@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PackageChecker.FileSystem;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,6 +27,16 @@ namespace PackageChecker
 		{
 			InitializeComponent();
 			controller = new MainWindowController(this);
+			DataContext = controller;
+		}
+
+		private void ArchiveChoose_Click(object sender, RoutedEventArgs e)
+		{
+			string fileName = PickerDialog.PickZipDialog();
+			if (!string.IsNullOrEmpty(fileName))
+			{
+				controller.SetZipState(fileName);
+			}
 		}
 	}
 }

@@ -1,19 +1,38 @@
-﻿using System;
+﻿using PackageChecker.WindowManagement;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace PackageChecker
 {
-	public class MainWindowController
+	public class MainWindowController : INotifyPropertyChanged
 	{
+		public WindowState windowState { get; private set; }
 		protected MainWindow window;
+
+		public string PathValue { get; set; }
+		public event PropertyChangedEventHandler PropertyChanged;
 
 		public MainWindowController(MainWindow window)
 		{
 			this.window = window;
 			InitializeWindow();
+		}
+
+		public void SetZipState(string path)
+		{
+			SetPathMode();
+
+			if (PathValue != path)
+			{
+				PathValue = path;
+				PropertyChanged(this, new PropertyChangedEventArgs("PathValue"));
+			}
+
+			windowState = WindowState.ZipFile;
 		}
 
 		private void InitializeWindow()
