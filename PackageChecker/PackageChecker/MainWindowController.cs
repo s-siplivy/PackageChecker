@@ -48,6 +48,16 @@ namespace PackageChecker
 			windowState = WindowState.Folder;
 		}
 
+		public void SetEmptyState()
+		{
+			SetChooseMode();
+
+			PathValue = string.Empty;
+			PropertyChanged(this, new PropertyChangedEventArgs("PathValue"));
+
+			windowState = WindowState.None;
+		}
+
 		private void InitializeWindow()
 		{
 			SetChooseMode();

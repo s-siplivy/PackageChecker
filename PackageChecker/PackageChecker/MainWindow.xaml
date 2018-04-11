@@ -8,7 +8,7 @@
         Title="Package Checker" Height="650" Width="850" MinHeight="350" MinWidth="450">
 	<DockPanel Margin="10">
 		<DockPanel Name="PathPanel" DockPanel.Dock="Top">
-			<Button Name="SelectionCancel" Margin="5" Width="30" Height="30" DockPanel.Dock="Right">✖</Button>
+			<Button Name="SelectionCancel" Margin="5" Width="30" Height="30" DockPanel.Dock="Right" Click="SelectionCancel_Click">✖</Button>
 			<TextBox Name="PathTextBox" IsReadOnly="True" Margin="5" MaxLines="1" Text="{Binding PathValue}"></TextBox>
 		</DockPanel>
 		<StackPanel Name="ChoosePanel" Orientation="Horizontal" HorizontalAlignment="Center" DockPanel.Dock="Top">

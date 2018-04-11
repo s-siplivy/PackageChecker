@@ -47,5 +47,10 @@ namespace PackageChecker
 				controller.SetFolderState(folderPath);
 			}
 		}
+
+		private void SelectionCancel_Click(object sender, RoutedEventArgs e)
+		{
+			controller.SetEmptyState();
+		}
 	}
 }
