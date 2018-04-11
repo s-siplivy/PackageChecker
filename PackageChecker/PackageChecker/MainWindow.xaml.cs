@@ -20,9 +20,12 @@ namespace PackageChecker
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+		protected MainWindowController controller;
+
 		public MainWindow()
 		{
 			InitializeComponent();
+			controller = new MainWindowController(this);
 		}
 	}
 }
