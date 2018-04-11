@@ -52,5 +52,10 @@ namespace PackageChecker
 		{
 			controller.SetEmptyState();
 		}
+
+		private void AddFilter_Click(object sender, RoutedEventArgs e)
+		{
+			controller.AddFilteringExpression();
+		}
 	}
 }

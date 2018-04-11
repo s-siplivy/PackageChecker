@@ -1,6 +1,7 @@
 ﻿using PackageChecker.WindowManagement;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -11,14 +12,21 @@ namespace PackageChecker
 	public class MainWindowController : INotifyPropertyChanged
 	{
 		public WindowState windowState { get; private set; }
+		protected FilteringManager filteringManager;
 		protected MainWindow window;
 
 		public string PathValue { get; set; }
+		public string CurrentFilteringExpression { get; set; }
+		public ObservableCollection<string> FilteringExpressions { get; set; }
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		public MainWindowController(MainWindow window)
 		{
 			this.window = window;
+
+			FilteringExpressions = new ObservableCollection<string>();
+			filteringManager = new FilteringManager(FilteringExpressions);
+
 			InitializeWindow();
 		}
 
@@ -58,6 +66,20 @@ namespace PackageChecker
 			windowState = WindowState.None;
 		}
 
+		public void AddFilteringExpression()
+		{
+			try
+			{
+				filteringManager.AddExpression(CurrentFilteringExpression);
+				CurrentFilteringExpression = string.Empty;
+				PropertyChanged(this, new PropertyChangedEventArgs("CurrentFilteringExpression"));
+			}
+			catch (ArgumentException e)
+			{
+				ShowMessage(e.Message, "Error");
+			}
+		}
+
 		private void InitializeWindow()
 		{
 			SetChooseMode();
@@ -73,6 +95,11 @@ namespace PackageChecker
 		{
 			window.PathPanel.Visibility = System.Windows.Visibility.Visible;
 			window.ChoosePanel.Visibility = System.Windows.Visibility.Collapsed;
+		}
+
+		private void ShowMessage(string message, string caption)
+		{
+			System.Windows.MessageBox.Show(message, caption);
 		}
 	}
 }
