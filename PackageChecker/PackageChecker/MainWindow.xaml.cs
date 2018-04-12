@@ -2,6 +2,7 @@
 using PackageChecker.WindowManagement;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -88,6 +89,11 @@ namespace PackageChecker
 		private void UpdateFiles_Click(object sender, RoutedEventArgs e)
 		{
 			controller.UpdateFilesList();
+		}
+
+		public void OnWindowClosing(object sender, CancelEventArgs e)
+		{
+			controller.SaveDataOnClose();
 		}
 	}
 }

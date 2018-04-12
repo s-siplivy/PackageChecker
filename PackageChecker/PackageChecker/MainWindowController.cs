@@ -13,6 +13,7 @@ namespace PackageChecker
 {
 	public class MainWindowController
 	{
+		protected const string savedFiltersPath = "filters-v1.dat";
 		protected const string filteringStatusTemplate = "Files shown: {0}. Files hidden: {1}.";
 
 		public WindowState windowState { get; private set; }
@@ -25,6 +26,8 @@ namespace PackageChecker
 		{
 			this.window = window;
 			this.dataModel = dataModel;
+
+			LoadSavedData();
 
 			filteringManager = new FilteringManager(dataModel.FilteringExpressions);
 			filesManager = new FilesManager(filteringManager, dataModel.FileRecords);
@@ -143,10 +146,24 @@ namespace PackageChecker
 			UpdateFilteringStatus();
 		}
 
+		public void SaveDataOnClose()
+		{
+			Serializer.SaveObjectToFile(dataModel.FilteringExpressions, savedFiltersPath);
+		}
+
 		private void UpdateFilteringStatus()
 		{
 			dataModel.CurrentFilteringStatus = string.Format(CultureInfo.InvariantCulture,
 				filteringStatusTemplate, filesManager.FilesShown, filesManager.FilesTotal - filesManager.FilesShown);
+		}
+
+		private void LoadSavedData()
+		{
+			ObservableCollection<string> savedFilters = Serializer.LoadObjectFromFile(savedFiltersPath) as ObservableCollection<string>;
+			if (savedFilters != null)
+			{
+				dataModel.FilteringExpressions = savedFilters;
+			}
 		}
 
 		private void InitializeWindow()

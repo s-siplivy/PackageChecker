@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PackageChecker"
         mc:Ignorable="d"
+        Closing="OnWindowClosing"
         Title="Package Checker" Height="650" Width="850" MinHeight="350" MinWidth="450">
 	<DockPanel Margin="10">
 		<DockPanel Name="PathPanel" DockPanel.Dock="Top">
