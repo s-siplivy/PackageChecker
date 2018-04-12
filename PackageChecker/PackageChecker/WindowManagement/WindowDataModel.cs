@@ -13,6 +13,7 @@ namespace PackageChecker.WindowManagement
 	{
 		private string pathValue;
 		private string currentFilteringExpression;
+		private string currentFilteringStatus;
 		private ObservableCollection<FileRecord> fileRecords;
 		private ObservableCollection<string> filteringExpressions;
 
@@ -38,6 +39,19 @@ namespace PackageChecker.WindowManagement
 				{
 					currentFilteringExpression = value;
 					PropertyChanged(this, new PropertyChangedEventArgs("CurrentFilteringExpression"));
+				}
+			}
+		}
+
+		public string CurrentFilteringStatus
+		{
+			get { return currentFilteringStatus; }
+			set
+			{
+				if (currentFilteringStatus != value)
+				{
+					currentFilteringStatus = value;
+					PropertyChanged(this, new PropertyChangedEventArgs("CurrentFilteringStatus"));
 				}
 			}
 		}

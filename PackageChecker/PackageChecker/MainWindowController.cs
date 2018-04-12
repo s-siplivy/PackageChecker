@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,8 @@ namespace PackageChecker
 {
 	public class MainWindowController
 	{
+		protected const string filteringStatusTemplate = "Files shown: {0}. Files hidden: {1}.";
+
 		public WindowState windowState { get; private set; }
 		protected FilteringManager filteringManager;
 		protected FilesManager filesManager;
@@ -26,6 +29,7 @@ namespace PackageChecker
 			filteringManager = new FilteringManager(dataModel.FilteringExpressions);
 			filesManager = new FilesManager(filteringManager, dataModel.FileRecords);
 
+			UpdateFilteringStatus();
 			InitializeWindow();
 		}
 
@@ -112,6 +116,13 @@ namespace PackageChecker
 					filesManager.ResetFileRecords(dataModel.PathValue, SearchType.Zip);
 					break;
 			}
+			UpdateFilteringStatus();
+		}
+
+		private void UpdateFilteringStatus()
+		{
+			dataModel.CurrentFilteringStatus = string.Format(CultureInfo.InvariantCulture,
+				filteringStatusTemplate, filesManager.FilesShown, filesManager.FilesTotal - filesManager.FilesShown);
 		}
 
 		private void InitializeWindow()

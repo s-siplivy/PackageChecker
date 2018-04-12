@@ -16,10 +16,21 @@ namespace PackageChecker.FileSystem
 		private ObservableCollection<FileRecord> fileRecords;
 		private List<FileRecord> allFileRecords;
 
+		public int FilesTotal
+		{
+			get { return allFileRecords.Count; }
+		}
+
+		public int FilesShown
+		{
+			get { return fileRecords.Count; }
+		}
+
 		public FilesManager(FilteringManager filteringManager, ObservableCollection<FileRecord> fileRecords)
 		{
 			this.filteringManager = filteringManager;
 			this.fileRecords = fileRecords;
+			this.allFileRecords = new List<FileRecord>();
 		}
 
 		public void ResetFileRecords(string path, SearchType type)

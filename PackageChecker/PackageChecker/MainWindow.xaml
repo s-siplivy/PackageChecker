@@ -31,7 +31,7 @@
 		</Border>
 		<DockPanel DockPanel.Dock="Top">
 			<Button Name="RunSearch" Margin="5" Width="25" Height="25" DockPanel.Dock="Left" Click="RunSearch_Click">🔎</Button>
-			<TextBlock Name="InfoText" Margin="5" VerticalAlignment="Center">Files shown: 0. Files hidden: 0.</TextBlock>
+			<TextBlock Name="InfoText" Margin="5" VerticalAlignment="Center" Text="{Binding Path=CurrentFilteringStatus}" />
 		</DockPanel>
 		<ListView Name="FilesList" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" ItemsSource="{Binding FileRecords}">
 			<ListView.View>
