@@ -25,7 +25,7 @@
 					<Button Name="RemoveFilter" Margin="5" Width="20" Height="20" DockPanel.Dock="Right" Click="RemoveFilter_Click" ToolTip="Remove expression">✗</Button>
 					<Button Name="EditFilter" Margin="5" Width="20" Height="20" DockPanel.Dock="Right" VerticalAlignment="Center" Click="EditFilter_Click" ToolTip="Edit expression">✎</Button>
 					<Button Name="AddFilter" Margin="5" Width="20" Height="20" DockPanel.Dock="Right" VerticalAlignment="Center" Click="AddFilter_Click" ToolTip="Add expression">✓</Button>
-					<TextBox Name="FilterExpression" Margin="5" MaxLines="1" VerticalAlignment="Center" Text="{Binding CurrentFilteringExpression}"></TextBox>
+					<TextBox Name="FilterExpression" Margin="5" MaxLines="1" VerticalAlignment="Center" KeyDown="FilterExpression_KeyDown" Text="{Binding CurrentFilteringExpression}"></TextBox>
 				</DockPanel>
 			</Expander>
 		</Border>

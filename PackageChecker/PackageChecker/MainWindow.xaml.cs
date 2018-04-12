@@ -56,6 +56,16 @@ namespace PackageChecker
 			controller.SetEmptyState();
 		}
 
+		private void FilterExpression_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.Key == Key.Enter)
+			{
+				TextBox box = (TextBox)sender;
+				dataModel.CurrentFilteringExpression = box.Text;
+				controller.AddFilteringExpression();
+			}
+		}
+
 		private void AddFilter_Click(object sender, RoutedEventArgs e)
 		{
 			controller.AddFilteringExpression();
