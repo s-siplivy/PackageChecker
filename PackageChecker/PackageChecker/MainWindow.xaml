@@ -33,7 +33,7 @@
 			<Button Name="RunSearch" Margin="5" Width="25" Height="25" DockPanel.Dock="Left">🔎</Button>
 			<TextBlock Name="InfoText" Margin="5" VerticalAlignment="Center">Files shown: 0. Files hidden: 0.</TextBlock>
 		</DockPanel>
-		<ListView Name="FilesList" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+		<ListView Name="FilesList" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" ItemsSource="{Binding FileRecords}">
 			<ListView.View>
 				<GridView>
 					<GridViewColumn Header="Product Version" Width="220" DisplayMemberBinding="{Binding ProductVersion}" />

@@ -1,4 +1,5 @@
-﻿using PackageChecker.WindowManagement;
+﻿using PackageChecker.FileSystem;
+using PackageChecker.WindowManagement;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -18,12 +19,14 @@ namespace PackageChecker
 		public string PathValue { get; set; }
 		public string CurrentFilteringExpression { get; set; }
 		public ObservableCollection<string> FilteringExpressions { get; set; }
+		public ObservableCollection<FileRecord> FileRecords { get; set; }
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		public MainWindowController(MainWindow window)
 		{
 			this.window = window;
 
+			FileRecords = new ObservableCollection<FileRecord>();
 			FilteringExpressions = new ObservableCollection<string>();
 			filteringManager = new FilteringManager(FilteringExpressions);
 
