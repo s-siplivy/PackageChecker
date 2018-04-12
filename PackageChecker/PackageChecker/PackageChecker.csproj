@@ -57,6 +57,7 @@
     </ApplicationDefinition>
     <Compile Include="FileSystem\FileRecord.cs" />
     <Compile Include="WindowManagement\FilteringManager.cs" />
+    <Compile Include="WindowManagement\WindowDataModel.cs" />
     <Compile Include="WindowManagement\WindowState.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

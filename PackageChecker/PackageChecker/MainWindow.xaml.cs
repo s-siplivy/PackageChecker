@@ -1,4 +1,5 @@
 ﻿using PackageChecker.FileSystem;
+using PackageChecker.WindowManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,12 +23,14 @@ namespace PackageChecker
 	public partial class MainWindow : Window
 	{
 		protected MainWindowController controller;
+		protected WindowDataModel dataModel;
 
 		public MainWindow()
 		{
 			InitializeComponent();
-			controller = new MainWindowController(this);
-			DataContext = controller;
+
+			dataModel = new WindowDataModel();
+			controller = new MainWindowController(this, dataModel);
 		}
 
 		private void ArchiveChoose_Click(object sender, RoutedEventArgs e)

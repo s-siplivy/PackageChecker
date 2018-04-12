@@ -10,25 +10,19 @@ using System.Threading.Tasks;
 
 namespace PackageChecker
 {
-	public class MainWindowController : INotifyPropertyChanged
+	public class MainWindowController
 	{
 		public WindowState windowState { get; private set; }
 		protected FilteringManager filteringManager;
 		protected MainWindow window;
+		protected WindowDataModel dataModel;
 
-		public string PathValue { get; set; }
-		public string CurrentFilteringExpression { get; set; }
-		public ObservableCollection<string> FilteringExpressions { get; set; }
-		public ObservableCollection<FileRecord> FileRecords { get; set; }
-		public event PropertyChangedEventHandler PropertyChanged;
-
-		public MainWindowController(MainWindow window)
+		public MainWindowController(MainWindow window, WindowDataModel dataModel)
 		{
 			this.window = window;
+			this.dataModel = dataModel;
 
-			FileRecords = new ObservableCollection<FileRecord>();
-			FilteringExpressions = new ObservableCollection<string>();
-			filteringManager = new FilteringManager(FilteringExpressions);
+			filteringManager = new FilteringManager(dataModel.FilteringExpressions);
 
 			InitializeWindow();
 		}
@@ -37,10 +31,10 @@ namespace PackageChecker
 		{
 			SetPathMode();
 
-			if (PathValue != path)
+			if (dataModel.PathValue != path)
 			{
-				PathValue = path;
-				PropertyChanged(this, new PropertyChangedEventArgs("PathValue"));
+				dataModel.PathValue = path;
+				
 			}
 
 			windowState = WindowState.ZipFile;
@@ -50,10 +44,9 @@ namespace PackageChecker
 		{
 			SetPathMode();
 
-			if (PathValue != path)
+			if (dataModel.PathValue != path)
 			{
-				PathValue = path;
-				PropertyChanged(this, new PropertyChangedEventArgs("PathValue"));
+				dataModel.PathValue = path;
 			}
 
 			windowState = WindowState.Folder;
@@ -63,8 +56,7 @@ namespace PackageChecker
 		{
 			SetChooseMode();
 
-			PathValue = string.Empty;
-			PropertyChanged(this, new PropertyChangedEventArgs("PathValue"));
+			dataModel.PathValue = string.Empty;
 
 			windowState = WindowState.None;
 		}
@@ -73,9 +65,8 @@ namespace PackageChecker
 		{
 			try
 			{
-				filteringManager.AddExpression(CurrentFilteringExpression);
-				CurrentFilteringExpression = string.Empty;
-				PropertyChanged(this, new PropertyChangedEventArgs("CurrentFilteringExpression"));
+				filteringManager.AddExpression(dataModel.CurrentFilteringExpression);
+				dataModel.CurrentFilteringExpression = string.Empty;
 			}
 			catch (ArgumentException e)
 			{
@@ -88,8 +79,7 @@ namespace PackageChecker
 			try
 			{
 				int index = window.ListFilterExpressions.SelectedIndex;
-				CurrentFilteringExpression = filteringManager.EditExpression(index);
-				PropertyChanged(this, new PropertyChangedEventArgs("CurrentFilteringExpression"));
+				dataModel.CurrentFilteringExpression = filteringManager.EditExpression(index);
 			}
 			catch (ArgumentException e)
 			{
@@ -112,6 +102,7 @@ namespace PackageChecker
 		private void InitializeWindow()
 		{
 			SetChooseMode();
+			window.DataContext = dataModel;
 		}
 
 		private void SetChooseMode()
