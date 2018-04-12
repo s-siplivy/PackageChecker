@@ -14,6 +14,7 @@ namespace PackageChecker
 	{
 		public WindowState windowState { get; private set; }
 		protected FilteringManager filteringManager;
+		protected FilesManager filesManager;
 		protected MainWindow window;
 		protected WindowDataModel dataModel;
 
@@ -23,6 +24,7 @@ namespace PackageChecker
 			this.dataModel = dataModel;
 
 			filteringManager = new FilteringManager(dataModel.FilteringExpressions);
+			filesManager = new FilesManager(filteringManager, dataModel.FileRecords);
 
 			InitializeWindow();
 		}
@@ -96,6 +98,19 @@ namespace PackageChecker
 			catch (ArgumentException e)
 			{
 				ShowMessage(e.Message, "Error");
+			}
+		}
+
+		public void UpdateFilesList()
+		{
+			switch (windowState)
+			{
+				case WindowState.Folder:
+					filesManager.ResetFileRecords(dataModel.PathValue, SearchType.Folder);
+					break;
+				case WindowState.ZipFile:
+					filesManager.ResetFileRecords(dataModel.PathValue, SearchType.Zip);
+					break;
 			}
 		}
 

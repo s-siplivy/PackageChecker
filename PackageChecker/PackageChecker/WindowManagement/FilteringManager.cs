@@ -16,6 +16,32 @@ namespace PackageChecker.WindowManagement
 			this.expressions = expressions;
 		}
 
+		public FilteringInfo GetFilteringInfo()
+		{
+			FilteringInfo info = new FilteringInfo();
+
+			foreach (string expression in expressions)
+			{
+				KeyValuePair<string, string> filter = ParseExpression(expression);
+				switch(filter.Key)
+				{
+					case "pv":
+						info.ProductVersionFilters.Add(filter.Value);
+						break;
+					case "fv":
+						info.FileVersionFilters.Add(filter.Value);
+						break;
+					case "fp":
+						info.FilePathFilters.Add(filter.Value);
+						break;
+					default:
+						throw new InvalidOperationException();
+				}
+			}
+
+			return info;
+		}
+
 		public void AddExpression(string expression)
 		{
 			if (string.IsNullOrEmpty(expression))

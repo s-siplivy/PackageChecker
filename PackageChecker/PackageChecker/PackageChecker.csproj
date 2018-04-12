@@ -56,6 +56,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="FileSystem\FileRecord.cs" />
+    <Compile Include="FileSystem\FilesManager.cs" />
+    <Compile Include="FileSystem\SearchType.cs" />
+    <Compile Include="WindowManagement\FilteringInfo.cs" />
     <Compile Include="WindowManagement\FilteringManager.cs" />
     <Compile Include="WindowManagement\WindowDataModel.cs" />
     <Compile Include="WindowManagement\WindowState.cs" />

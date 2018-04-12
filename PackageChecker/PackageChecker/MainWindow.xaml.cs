@@ -69,5 +69,10 @@ namespace PackageChecker
 		{
 			controller.RemoveFilteringExpression();
 		}
+
+		private void RunSearch_Click(object sender, RoutedEventArgs e)
+		{
+			controller.UpdateFilesList();
+		}
 	}
 }
