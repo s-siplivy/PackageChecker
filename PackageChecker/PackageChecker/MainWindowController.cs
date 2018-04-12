@@ -44,6 +44,8 @@ namespace PackageChecker
 			}
 
 			windowState = WindowState.ZipFile;
+
+			UpdateFilesList();
 		}
 
 		public void SetFolderState(string path)
@@ -56,6 +58,8 @@ namespace PackageChecker
 			}
 
 			windowState = WindowState.Folder;
+
+			UpdateFilesList();
 		}
 
 		public void SetEmptyState()
@@ -65,6 +69,8 @@ namespace PackageChecker
 			dataModel.PathValue = string.Empty;
 
 			windowState = WindowState.None;
+
+			ClearFilesList();
 		}
 
 		public void AddFilteringExpression()
@@ -128,6 +134,12 @@ namespace PackageChecker
 					filesManager.ResetFileRecords(dataModel.PathValue, SearchType.Zip);
 					break;
 			}
+			UpdateFilteringStatus();
+		}
+
+		public void ClearFilesList()
+		{
+			filesManager.Clear();
 			UpdateFilteringStatus();
 		}
 

@@ -51,6 +51,13 @@ namespace PackageChecker.FileSystem
 			ApplyFilteting();
 		}
 
+		public void Clear()
+		{
+			allFileRecords.Clear();
+			fileRecords.Clear();
+			ApplyFilteting();
+		}
+
 		public void ApplyFilteting()
 		{
 			fileRecords.Clear();
