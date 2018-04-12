@@ -73,6 +73,7 @@ namespace PackageChecker
 			{
 				filteringManager.AddExpression(dataModel.CurrentFilteringExpression);
 				dataModel.CurrentFilteringExpression = string.Empty;
+				ApplyFilesConditions();
 			}
 			catch (ArgumentException e)
 			{
@@ -86,6 +87,7 @@ namespace PackageChecker
 			{
 				int index = window.ListFilterExpressions.SelectedIndex;
 				dataModel.CurrentFilteringExpression = filteringManager.EditExpression(index);
+				ApplyFilesConditions();
 			}
 			catch (ArgumentException e)
 			{
@@ -98,6 +100,7 @@ namespace PackageChecker
 			try
 			{
 				filteringManager.RemoveExpression(window.ListFilterExpressions.SelectedIndex);
+				ApplyFilesConditions();
 			}
 			catch (ArgumentException e)
 			{
