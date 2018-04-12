@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,6 +41,9 @@ namespace PackageChecker.FileSystem
 				case SearchType.Folder:
 					allFileRecords = GetAllFolderRecords(path);
 					break;
+				case SearchType.Zip:
+					allFileRecords = GetAllZipRecords(path);
+					break;
 				default:
 					throw new ArgumentException(nameof(type));
 			}
@@ -67,6 +71,33 @@ namespace PackageChecker.FileSystem
 		private List<FileRecord> GetAllFolderRecords(string dirPath)
 		{
 			List<string> filePaths = DirSearch(dirPath);
+			return CollectFilesInfo(filePaths, dirPath);
+		}
+
+		private List<FileRecord> GetAllZipRecords(string zipPath)
+		{
+			string temptPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+
+			Directory.CreateDirectory(temptPath);
+			try
+			{
+				ZipExtract(zipPath, temptPath);
+				List<string> filePaths = DirSearch(temptPath);
+				return CollectFilesInfo(filePaths, temptPath);
+			}
+			finally
+			{
+				Directory.Delete(temptPath, true);
+			}
+		}
+
+		private void ZipExtract(string zipPath, string dirPath)
+		{
+			ZipFile.ExtractToDirectory(zipPath, dirPath);
+		}
+
+		private List<FileRecord> CollectFilesInfo(List<string> filePaths, string dirPath)
+		{
 			List<FileRecord> allFiles = new List<FileRecord>(filePaths.Count);
 
 			foreach (string filePath in filePaths)
