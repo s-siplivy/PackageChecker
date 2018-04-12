@@ -133,8 +133,12 @@ namespace PackageChecker.FileSystem
 
 		private string GetRelativePath(string fullPath, string rootPath)
 		{
-			var fileUri = new Uri(fullPath);
-			var referenceUri = new Uri(rootPath);
+			if (!rootPath.EndsWith(Path.DirectorySeparatorChar.ToString()))
+			{
+				rootPath += Path.DirectorySeparatorChar;
+			}
+			Uri fileUri = new Uri(fullPath);
+			Uri referenceUri = new Uri(rootPath);
 			return referenceUri.MakeRelativeUri(fileUri).ToString();
 		}
 	}
