@@ -105,6 +105,15 @@ namespace PackageChecker
 			}
 		}
 
+		public void ApplyFilesConditions()
+		{
+			if (windowState == WindowState.Folder || windowState == WindowState.ZipFile)
+			{
+				filesManager.ApplyFilteting();
+			}
+			UpdateFilteringStatus();
+		}
+
 		public void UpdateFilesList()
 		{
 			switch (windowState)

@@ -51,7 +51,7 @@ namespace PackageChecker.FileSystem
 			ApplyFilteting();
 		}
 
-		private void ApplyFilteting()
+		public void ApplyFilteting()
 		{
 			fileRecords.Clear();
 			FilteringInfo info = filteringManager.GetFilteringInfo();

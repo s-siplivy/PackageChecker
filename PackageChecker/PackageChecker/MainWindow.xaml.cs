@@ -72,6 +72,11 @@ namespace PackageChecker
 
 		private void RunSearch_Click(object sender, RoutedEventArgs e)
 		{
+			controller.ApplyFilesConditions();
+		}
+
+		private void UpdateFiles_Click(object sender, RoutedEventArgs e)
+		{
 			controller.UpdateFilesList();
 		}
 	}
