@@ -130,6 +130,10 @@ namespace PackageChecker.FileSystem
 			{
 				files.Add(filePath);
 			}
+			foreach (string filePath in Directory.GetFiles(dirPath, "*.EXE"))
+			{
+				files.Add(filePath);
+			}
 			foreach (string childDirPath in Directory.GetDirectories(dirPath))
 			{
 				files.AddRange(DirSearch(childDirPath));
