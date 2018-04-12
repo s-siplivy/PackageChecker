@@ -76,6 +76,8 @@ namespace PackageChecker.WindowManagement
 			currentFilteringExpression = string.Empty;
 			fileRecords = new ObservableCollection<FileRecord>();
 			filteringExpressions = new ObservableCollection<string>();
+
+			PropertyChanged += (s,e) => { };
 		}
 	}
 }
