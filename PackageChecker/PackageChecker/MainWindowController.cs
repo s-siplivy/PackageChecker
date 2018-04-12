@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -159,7 +160,17 @@ namespace PackageChecker
 
 		private void LoadSavedData()
 		{
-			ObservableCollection<string> savedFilters = Serializer.LoadObjectFromFile(savedFiltersPath) as ObservableCollection<string>;
+			ObservableCollection<string> savedFilters = null;
+
+			try
+			{
+				savedFilters = Serializer.LoadObjectFromFile(savedFiltersPath) as ObservableCollection<string>;
+			}
+			catch (SerializationException e)
+			{
+				ShowMessage("Failed to restore previous data. Corrupted files will be overwritten.", "Error");
+			}
+
 			if (savedFilters != null)
 			{
 				dataModel.FilteringExpressions = savedFilters;
