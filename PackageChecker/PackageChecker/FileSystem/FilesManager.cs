@@ -200,7 +200,7 @@ namespace PackageChecker.FileSystem
 			}
 			Uri fileUri = new Uri(fullPath);
 			Uri referenceUri = new Uri(rootPath);
-			return referenceUri.MakeRelativeUri(fileUri).ToString();
+			return referenceUri.MakeRelativeUri(fileUri).ToString().Replace("%20", " ");
 		}
 
 		private void UpdateProgress(int progress)
