@@ -45,7 +45,6 @@ namespace PackageChecker
 			if (dataModel.PathValue != path)
 			{
 				dataModel.PathValue = path;
-				
 			}
 
 			Task task = UpdateFilesList(WindowState.ZipFile);

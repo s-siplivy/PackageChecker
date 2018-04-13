@@ -22,7 +22,10 @@ namespace PackageChecker.WindowManagement
 
 		public bool IsProgressBarIndeterminate
 		{
-			get { return isProgressBarIndeterminate; }
+			get
+			{
+				return isProgressBarIndeterminate;
+			}
 			set
 			{
 				if (isProgressBarIndeterminate != value)
@@ -35,7 +38,10 @@ namespace PackageChecker.WindowManagement
 
 		public int ProgressBarCurrent
 		{
-			get { return progressBarCurrent; }
+			get
+			{
+				return progressBarCurrent;
+			}
 			set
 			{
 				if (progressBarCurrent != value)
@@ -48,7 +54,10 @@ namespace PackageChecker.WindowManagement
 
 		public string ProgressText
 		{
-			get { return progressText; }
+			get
+			{
+				return progressText;
+			}
 			set
 			{
 				if (progressText != value)
@@ -61,7 +70,10 @@ namespace PackageChecker.WindowManagement
 
 		public string PathValue
 		{
-			get { return pathValue; }
+			get
+			{
+				return pathValue;
+			}
 			set
 			{
 				if (pathValue != value)
@@ -74,7 +86,10 @@ namespace PackageChecker.WindowManagement
 
 		public string CurrentFilteringExpression
 		{
-			get { return currentFilteringExpression; }
+			get
+			{
+				return currentFilteringExpression;
+			}
 			set
 			{
 				if (currentFilteringExpression != value)
@@ -87,7 +102,10 @@ namespace PackageChecker.WindowManagement
 
 		public string CurrentFilteringStatus
 		{
-			get { return currentFilteringStatus; }
+			get
+			{
+				return currentFilteringStatus;
+			}
 			set
 			{
 				if (currentFilteringStatus != value)
@@ -100,7 +118,10 @@ namespace PackageChecker.WindowManagement
 
 		public ObservableCollection<string> FilteringExpressions
 		{
-			get { return filteringExpressions; }
+			get
+			{
+				return filteringExpressions;
+			}
 			set
 			{
 				if (filteringExpressions != value)
@@ -113,7 +134,10 @@ namespace PackageChecker.WindowManagement
 
 		public ObservableCollection<FileRecord> FileRecords
 		{
-			get { return fileRecords; }
+			get
+			{
+				return fileRecords;
+			}
 			set
 			{
 				if (fileRecords != value)
@@ -136,7 +160,7 @@ namespace PackageChecker.WindowManagement
 			fileRecords = new ObservableCollection<FileRecord>();
 			filteringExpressions = new ObservableCollection<string>();
 
-			PropertyChanged += (s,e) => { };
+			PropertyChanged += (s, e) => { };
 		}
 	}
 }

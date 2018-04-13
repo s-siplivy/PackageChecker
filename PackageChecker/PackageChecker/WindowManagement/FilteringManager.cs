@@ -23,7 +23,7 @@ namespace PackageChecker.WindowManagement
 			foreach (string expression in expressions)
 			{
 				KeyValuePair<string, string> filter = ParseExpression(expression);
-				switch(filter.Key)
+				switch (filter.Key)
 				{
 					case "pv":
 						info.ProductVersionFilters.Add(filter.Value);
