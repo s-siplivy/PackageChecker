@@ -13,6 +13,7 @@ namespace PackageChecker.FileSystem
 {
 	public class FilesManager
 	{
+		private ProgressBarController progressController;
 		private FilteringManager filteringManager;
 		private ObservableCollection<FileRecord> fileRecords;
 		private List<FileRecord> allFileRecords;
@@ -27,28 +28,19 @@ namespace PackageChecker.FileSystem
 			get { return fileRecords.Count; }
 		}
 
-		public FilesManager(FilteringManager filteringManager, ObservableCollection<FileRecord> fileRecords)
+		public FilesManager(FilteringManager filteringManager, ProgressBarController progressController, ObservableCollection<FileRecord> fileRecords)
 		{
 			this.filteringManager = filteringManager;
+			this.progressController = progressController;
 			this.fileRecords = fileRecords;
 			this.allFileRecords = new List<FileRecord>();
 		}
 
-		public void ResetFileRecords(string path, SearchType type)
+		public Task ResetFileRecords(string path, SearchType type)
 		{
-			switch (type)
-			{
-				case SearchType.Folder:
-					allFileRecords = GetAllFolderRecords(path);
-					break;
-				case SearchType.Zip:
-					allFileRecords = GetAllZipRecords(path);
-					break;
-				default:
-					throw new ArgumentException(nameof(type));
-			}
-
-			ApplyFilteting();
+			Task task = new Task(() => UpdateFileRecordsAsync(path, type));
+			task.Start();
+			return task;
 		}
 
 		public void Clear()
@@ -73,6 +65,23 @@ namespace PackageChecker.FileSystem
 
 				fileRecords.Add(record);
 			}
+		}
+
+		private void UpdateFileRecordsAsync(string path, SearchType type)
+		{
+			switch (type)
+			{
+				case SearchType.Folder:
+					allFileRecords = GetAllFolderRecords(path);
+					break;
+				case SearchType.Zip:
+					allFileRecords = GetAllZipRecords(path);
+					break;
+				default:
+					throw new ArgumentException(nameof(type));
+			}
+
+			DispatcherInvoke(() => ApplyFilteting());
 		}
 
 		private List<FileRecord> GetAllFolderRecords(string dirPath)
@@ -100,12 +109,47 @@ namespace PackageChecker.FileSystem
 
 		private void ZipExtract(string zipPath, string dirPath)
 		{
-			ZipFile.ExtractToDirectory(zipPath, dirPath);
+			UpdateProgressText("Unzipping file");
+			IsProgressIndeterminate(false);
+
+			using (ZipArchive zip = ZipFile.OpenRead(zipPath))
+			{
+				ReadOnlyCollection<ZipArchiveEntry> zipFiles = zip.Entries;
+
+				int currentItem = 0;
+				int allItemsCount = zipFiles.Count;
+
+				foreach (ZipArchiveEntry entry in zipFiles)
+				{
+					if (entry.FullName.EndsWith(".dll", StringComparison.OrdinalIgnoreCase) ||
+						entry.FullName.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
+					{
+						string destinationPath = Path.Combine(dirPath, entry.FullName.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar));
+
+						FileInfo destinationPathFileInfo = new FileInfo(destinationPath);
+						if (!destinationPathFileInfo.Directory.Exists)
+						{
+							Directory.CreateDirectory(destinationPathFileInfo.DirectoryName);
+						}
+
+						entry.ExtractToFile(destinationPath, true);
+					}
+
+					currentItem++;
+					UpdateProgress(100 * currentItem / allItemsCount);
+				}
+			}
 		}
 
 		private List<FileRecord> CollectFilesInfo(List<string> filePaths, string dirPath)
 		{
+			UpdateProgressText("Collecting files info");
+			IsProgressIndeterminate(false);
+
 			List<FileRecord> allFiles = new List<FileRecord>(filePaths.Count);
+
+			int currentItem = 0;
+			int allItemsCount = filePaths.Count;
 
 			foreach (string filePath in filePaths)
 			{
@@ -117,6 +161,9 @@ namespace PackageChecker.FileSystem
 					FileVersion = fileVersionInfo.FileVersion,
 					ProductVersion = fileVersionInfo.ProductVersion,
 				});
+
+				currentItem++;
+				UpdateProgress(100 * currentItem / allItemsCount);
 			}
 
 			return allFiles;
@@ -124,6 +171,9 @@ namespace PackageChecker.FileSystem
 
 		private List<string> DirSearch(string dirPath)
 		{
+			UpdateProgressText("Dirrectory search");
+			IsProgressIndeterminate(true);
+
 			List<string> files = new List<string>();
 
 			foreach (string filePath in Directory.GetFiles(dirPath, "*.DLL"))
@@ -151,6 +201,26 @@ namespace PackageChecker.FileSystem
 			Uri fileUri = new Uri(fullPath);
 			Uri referenceUri = new Uri(rootPath);
 			return referenceUri.MakeRelativeUri(fileUri).ToString();
+		}
+
+		private void UpdateProgress(int progress)
+		{
+			DispatcherInvoke(() => progressController.Progress = progress);
+		}
+
+		private void UpdateProgressText(string progressText)
+		{
+			DispatcherInvoke(() => progressController.ProgressText = progressText);
+		}
+
+		private void IsProgressIndeterminate(bool isIndeterminate)
+		{
+			DispatcherInvoke(() => progressController.IsIndeterminate = isIndeterminate);
+		}
+
+		private void DispatcherInvoke(Action action)
+		{
+			App.Current.Dispatcher.Invoke(action);
 		}
 	}
 }

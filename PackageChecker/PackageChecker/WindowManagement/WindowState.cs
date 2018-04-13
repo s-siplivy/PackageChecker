@@ -9,6 +9,7 @@ namespace PackageChecker.WindowManagement
 	public enum WindowState
 	{
 		None,
+		ProgressPanel,
 		ZipFile,
 		Folder
 	}

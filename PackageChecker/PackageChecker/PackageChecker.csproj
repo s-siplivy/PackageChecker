@@ -63,6 +63,7 @@
     <Compile Include="FileSystem\Serializer.cs" />
     <Compile Include="WindowManagement\FilteringInfo.cs" />
     <Compile Include="WindowManagement\FilteringManager.cs" />
+    <Compile Include="WindowManagement\ProgressBarController.cs" />
     <Compile Include="WindowManagement\WindowDataModel.cs" />
     <Compile Include="WindowManagement\WindowState.cs" />
     <Page Include="MainWindow.xaml">

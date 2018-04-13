@@ -30,8 +30,9 @@ namespace PackageChecker
 
 			LoadSavedData();
 
+			ProgressBarController progressController = new ProgressBarController(dataModel);
 			filteringManager = new FilteringManager(dataModel.FilteringExpressions);
-			filesManager = new FilesManager(filteringManager, dataModel.FileRecords);
+			filesManager = new FilesManager(filteringManager, progressController, dataModel.FileRecords);
 
 			UpdateFilteringStatus();
 			InitializeWindow();
@@ -39,7 +40,7 @@ namespace PackageChecker
 
 		public void SetZipState(string path)
 		{
-			SetPathMode();
+			SetProgressMode();
 
 			if (dataModel.PathValue != path)
 			{
@@ -47,34 +48,36 @@ namespace PackageChecker
 				
 			}
 
-			windowState = WindowState.ZipFile;
-
-			UpdateFilesList();
+			Task task = UpdateFilesList(WindowState.ZipFile);
+			if (task != null)
+			{
+				task.ContinueWith(t => DispatcherInvoke(() => SetPathMode(WindowState.ZipFile)));
+			}
 		}
 
 		public void SetFolderState(string path)
 		{
-			SetPathMode();
+			SetProgressMode();
 
 			if (dataModel.PathValue != path)
 			{
 				dataModel.PathValue = path;
 			}
 
-			windowState = WindowState.Folder;
-
-			UpdateFilesList();
+			Task task = UpdateFilesList(WindowState.Folder);
+			if (task != null)
+			{
+				task.ContinueWith(t => DispatcherInvoke(() => SetPathMode(WindowState.Folder)));
+			}
 		}
 
 		public void SetEmptyState()
 		{
-			SetChooseMode();
-
 			dataModel.PathValue = string.Empty;
 
-			windowState = WindowState.None;
-
 			ClearFilesList();
+
+			SetChooseMode();
 		}
 
 		public void AddFilteringExpression()
@@ -127,18 +130,23 @@ namespace PackageChecker
 			UpdateFilteringStatus();
 		}
 
-		public void UpdateFilesList()
+		public Task UpdateFilesList(WindowState transitionState)
 		{
-			switch (windowState)
+			Task updateTask = null;
+
+			switch (transitionState)
 			{
 				case WindowState.Folder:
-					filesManager.ResetFileRecords(dataModel.PathValue, SearchType.Folder);
+					updateTask = filesManager.ResetFileRecords(dataModel.PathValue, SearchType.Folder);
 					break;
 				case WindowState.ZipFile:
-					filesManager.ResetFileRecords(dataModel.PathValue, SearchType.Zip);
+					updateTask = filesManager.ResetFileRecords(dataModel.PathValue, SearchType.Zip);
 					break;
 			}
-			UpdateFilteringStatus();
+
+			return updateTask == null ?
+				updateTask :
+				updateTask.ContinueWith(task => DispatcherInvoke(() => UpdateFilteringStatus()));
 		}
 
 		public void ClearFilesList()
@@ -185,19 +193,39 @@ namespace PackageChecker
 
 		private void SetChooseMode()
 		{
+			windowState = WindowState.None;
+
 			window.ChoosePanel.Visibility = System.Windows.Visibility.Visible;
 			window.PathPanel.Visibility = System.Windows.Visibility.Collapsed;
+			window.ProgressPanel.Visibility = System.Windows.Visibility.Collapsed;
 		}
 
-		private void SetPathMode()
+		private void SetPathMode(WindowState state)
 		{
+			windowState = state;
+
 			window.PathPanel.Visibility = System.Windows.Visibility.Visible;
+			window.ChoosePanel.Visibility = System.Windows.Visibility.Collapsed;
+			window.ProgressPanel.Visibility = System.Windows.Visibility.Collapsed;
+		}
+
+		private void SetProgressMode()
+		{
+			windowState = WindowState.ProgressPanel;
+
+			window.ProgressPanel.Visibility = System.Windows.Visibility.Visible;
+			window.PathPanel.Visibility = System.Windows.Visibility.Collapsed;
 			window.ChoosePanel.Visibility = System.Windows.Visibility.Collapsed;
 		}
 
 		private void ShowMessage(string message, string caption)
 		{
 			System.Windows.MessageBox.Show(message, caption);
+		}
+
+		private void DispatcherInvoke(Action action)
+		{
+			App.Current.Dispatcher.Invoke(action);
 		}
 	}
 }
