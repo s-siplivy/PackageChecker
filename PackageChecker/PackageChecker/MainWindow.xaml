@@ -31,8 +31,6 @@
 			</Expander>
 		</Border>
 		<DockPanel DockPanel.Dock="Top">
-			<Button Name="RunSearch" Margin="5" Width="25" Height="25" DockPanel.Dock="Left" Click="RunSearch_Click" ToolTip="Apply filtering">🔎</Button>
-			<Button Name="UpdateFiles" Margin="5" Width="25" Height="25" DockPanel.Dock="Left" Click="UpdateFiles_Click" ToolTip="Reload files">↺</Button>
 			<TextBlock Name="InfoText" Margin="5" VerticalAlignment="Center" Text="{Binding Path=CurrentFilteringStatus}" />
 		</DockPanel>
 		<ListView Name="FilesList" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" ItemsSource="{Binding FileRecords}">

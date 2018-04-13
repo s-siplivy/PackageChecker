@@ -81,16 +81,6 @@ namespace PackageChecker
 			controller.RemoveFilteringExpression();
 		}
 
-		private void RunSearch_Click(object sender, RoutedEventArgs e)
-		{
-			controller.ApplyFilesConditions();
-		}
-
-		private void UpdateFiles_Click(object sender, RoutedEventArgs e)
-		{
-			controller.UpdateFilesList();
-		}
-
 		public void OnWindowClosing(object sender, CancelEventArgs e)
 		{
 			controller.SaveDataOnClose();
