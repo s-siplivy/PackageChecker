@@ -32,6 +32,8 @@ namespace PackageChecker
 
 			dataModel = new WindowDataModel();
 			controller = new MainWindowController(this, dataModel);
+
+			controller.RegisterUncaughtExpectionsHandler(AppDomain.CurrentDomain);
 		}
 
 		private void ArchiveChoose_Click(object sender, RoutedEventArgs e)

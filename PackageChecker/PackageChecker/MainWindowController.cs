@@ -161,6 +161,17 @@ namespace PackageChecker
 			UpdateFilteringStatus();
 		}
 
+		public void RegisterUncaughtExpectionsHandler(AppDomain domain)
+		{
+			domain.UnhandledException += new UnhandledExceptionEventHandler(
+				(sender, args) =>
+				{
+					Exception e = (Exception)args.ExceptionObject;
+					ShowMessage(e.Message, "Unexpected exception");
+					window.Close();
+				});
+		}
+
 		public void SaveDataOnClose()
 		{
 			Serializer.SaveObjectToFile(dataModel.FilteringExpressions, savedFiltersPath);
