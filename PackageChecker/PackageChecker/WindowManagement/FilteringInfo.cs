@@ -8,6 +8,8 @@ namespace PackageChecker.WindowManagement
 {
 	public class FilteringInfo
 	{
+		private const string specialSymbol = "*";
+
 		public FilteringCondition ProductVersionCondition { get; private set; }
 		public FilteringCondition FileVersionCondition { get; private set; }
 		public FilteringCondition FilePathCondition { get; private set; }
@@ -38,7 +40,7 @@ namespace PackageChecker.WindowManagement
 		{
 			foreach (string filter in condition.EntityEquals)
 			{
-				if (!value.Contains(filter))
+				if (!ContainsWithPattern(value, filter))
 				{
 					return false;
 				}
@@ -46,13 +48,47 @@ namespace PackageChecker.WindowManagement
 
 			foreach (string filter in condition.EntityNotEquals)
 			{
-				if (value.Contains(filter))
+				if (ContainsWithPattern(value, filter))
 				{
 					return false;
 				}
 			}
 
 			return true;
+		}
+
+		private bool ContainsWithPattern(string source, string value)
+		{
+			bool isStartsWith = false;
+			bool isEndsWith = false;
+			string localValue = value;
+
+			if (localValue.StartsWith(specialSymbol))
+			{
+				isEndsWith = true;
+				localValue = localValue.Substring(1, localValue.Length - 1);
+			}
+
+			if (localValue.EndsWith(specialSymbol))
+			{
+				isStartsWith = true;
+				localValue = localValue.Substring(0, localValue.Length - 1);
+			}
+
+			if (isStartsWith && isEndsWith)
+			{
+				return source.Contains(localValue);
+			}
+			else if (isStartsWith)
+			{
+				return source.StartsWith(localValue);
+			}
+			else if (isEndsWith)
+			{
+				return source.EndsWith(localValue);
+			}
+
+			return source == localValue;
 		}
 	}
 }
