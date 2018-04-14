@@ -56,14 +56,12 @@ namespace PackageChecker.FileSystem
 			FilteringInfo info = filteringManager.GetFilteringInfo();
 			foreach (FileRecord record in allFileRecords)
 			{
-				if (info.DoFilterFilePath(record.FilePath) ||
-					info.DoFilterFileVersion(record.FileVersion) ||
-					info.DoFilterProductVersion(record.ProductVersion))
+				if (info.IsCorrectFilePath(record.FilePath) &&
+					info.IsCorrectFileVersion(record.FileVersion) &&
+					info.IsCorrectProductVersion(record.ProductVersion))
 				{
-					continue;
+					fileRecords.Add(record);
 				}
-
-				fileRecords.Add(record);
 			}
 		}
 

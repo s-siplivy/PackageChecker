@@ -8,54 +8,51 @@ namespace PackageChecker.WindowManagement
 {
 	public class FilteringInfo
 	{
-		public List<string> ProductVersionFilters { get; private set; }
-		public List<string> FileVersionFilters { get; private set; }
-		public List<string> FilePathFilters { get; private set; }
+		public FilteringCondition ProductVersionCondition { get; private set; }
+		public FilteringCondition FileVersionCondition { get; private set; }
+		public FilteringCondition FilePathCondition { get; private set; }
 
 		public FilteringInfo()
 		{
-			ProductVersionFilters = new List<string>();
-			FileVersionFilters = new List<string>();
-			FilePathFilters = new List<string>();
+			ProductVersionCondition = new FilteringCondition();
+			FileVersionCondition = new FilteringCondition();
+			FilePathCondition = new FilteringCondition();
 		}
 
-		public bool DoFilterProductVersion(string productVersion)
+		public bool IsCorrectProductVersion(string productVersion)
 		{
-			foreach (string filter in ProductVersionFilters)
+			return IsValuePassCondition(ProductVersionCondition, productVersion);
+		}
+
+		public bool IsCorrectFileVersion(string fileVersion)
+		{
+			return IsValuePassCondition(FileVersionCondition, fileVersion);
+		}
+
+		public bool IsCorrectFilePath(string filePath)
+		{
+			return IsValuePassCondition(FilePathCondition, filePath);
+		}
+
+		private bool IsValuePassCondition(FilteringCondition condition, string value)
+		{
+			foreach (string filter in condition.EntityEquals)
 			{
-				if (productVersion.Contains(filter))
+				if (!value.Contains(filter))
 				{
-					return true;
+					return false;
 				}
 			}
 
-			return false;
-		}
-
-		public bool DoFilterFileVersion(string fileVersion)
-		{
-			foreach (string filter in FileVersionFilters)
+			foreach (string filter in condition.EntityNotEquals)
 			{
-				if (fileVersion.Contains(filter))
+				if (value.Contains(filter))
 				{
-					return true;
+					return false;
 				}
 			}
 
-			return false;
-		}
-
-		public bool DoFilterFilePath(string filePath)
-		{
-			foreach (string filter in FilePathFilters)
-			{
-				if (filePath.Contains(filter))
-				{
-					return true;
-				}
-			}
-
-			return false;
+			return true;
 		}
 	}
 }

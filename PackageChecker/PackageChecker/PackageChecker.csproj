@@ -61,6 +61,7 @@
     <Compile Include="FileSystem\FilesManager.cs" />
     <Compile Include="FileSystem\SearchType.cs" />
     <Compile Include="FileSystem\Serializer.cs" />
+    <Compile Include="WindowManagement\FilteringCondition.cs" />
     <Compile Include="WindowManagement\FilteringInfo.cs" />
     <Compile Include="WindowManagement\FilteringManager.cs" />
     <Compile Include="WindowManagement\ProgressBarController.cs" />

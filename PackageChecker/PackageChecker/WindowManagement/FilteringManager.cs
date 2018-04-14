@@ -1,19 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace PackageChecker.WindowManagement
 {
 	public class FilteringManager
 	{
+		protected const string regExpressionPatternSimplified = "(pv|fv|fp):(eq|ne|hl):*";
+		protected const string regExpressionPattern = "^(pv|fv|fp){1}:(eq|ne|hl){1}:(.+)$";
+		Regex regExpression;
+
 		protected ObservableCollection<string> expressions;
 
 		public FilteringManager(ObservableCollection<string> expressions)
 		{
 			this.expressions = expressions;
+
+			regExpression = new Regex(regExpressionPattern);
 		}
 
 		public FilteringInfo GetFilteringInfo()
@@ -22,21 +30,8 @@ namespace PackageChecker.WindowManagement
 
 			foreach (string expression in expressions)
 			{
-				KeyValuePair<string, string> filter = ParseExpression(expression);
-				switch (filter.Key)
-				{
-					case "pv":
-						info.ProductVersionFilters.Add(filter.Value);
-						break;
-					case "fv":
-						info.FileVersionFilters.Add(filter.Value);
-						break;
-					case "fp":
-						info.FilePathFilters.Add(filter.Value);
-						break;
-					default:
-						throw new InvalidOperationException();
-				}
+				Tuple<string, string, string> filter = ParseExpression(expression);
+				AddExpressionByProperty(info, filter.Item1, filter.Item2, filter.Item3);
 			}
 
 			return info;
@@ -44,22 +39,10 @@ namespace PackageChecker.WindowManagement
 
 		public void AddExpression(string expression)
 		{
-			if (string.IsNullOrEmpty(expression))
+			if (!regExpression.IsMatch(expression))
 			{
-				throw new ArgumentException("Empty expression.");
-			}
-
-			if (!expression.StartsWith("pv:") &&
-				!expression.StartsWith("fv:") &&
-				!expression.StartsWith("fp:"))
-			{
-				throw new ArgumentException("Expression should start with «pv:»|«fv:»|«fp:».");
-			}
-
-			KeyValuePair<string, string> filter = ParseExpression(expression);
-			if (string.IsNullOrEmpty(filter.Value))
-			{
-				throw new ArgumentException("Filter expression unspecified.");
+				throw new ArgumentException(string.Format(CultureInfo.InvariantCulture,
+					"An expression should follow the format: {0}", regExpressionPatternSimplified));
 			}
 
 			expressions.Add(expression);
@@ -97,11 +80,50 @@ namespace PackageChecker.WindowManagement
 			expressions.RemoveAt(index);
 		}
 
-		protected KeyValuePair<string, string> ParseExpression(string expression)
+		protected Tuple<string, string, string> ParseExpression(string expression)
 		{
-			string key = expression.Substring(0, 2);
-			string value = expression.Substring(3, expression.Length - 3);
-			return new KeyValuePair<string, string>(key, value);
+			Match expressionGroups = regExpression.Match(expression);
+
+			string property = expressionGroups.Groups[1].Value;
+			string condition = expressionGroups.Groups[2].Value;
+			string value = expressionGroups.Groups[3].Value;
+			return new Tuple<string, string, string>(property, condition, value);
+		}
+
+		protected void AddExpressionByProperty(FilteringInfo info, string propertyType, string conditionType, string value)
+		{
+			switch (propertyType)
+			{
+				case "pv":
+					AddExpressionByCondition(info.ProductVersionCondition, conditionType, value);
+					break;
+				case "fv":
+					AddExpressionByCondition(info.FileVersionCondition, conditionType, value);
+					break;
+				case "fp":
+					AddExpressionByCondition(info.FilePathCondition, conditionType, value);
+					break;
+				default:
+					throw new InvalidOperationException();
+			}
+		}
+
+		protected void AddExpressionByCondition(FilteringCondition condition, string conditionType, string value)
+		{
+			switch (conditionType)
+			{
+				case "eq":
+					condition.EntityEquals.Add(value);
+					break;
+				case "ne":
+					condition.EntityNotEquals.Add(value);
+					break;
+				case "hl":
+					condition.EntityHighlignt.Add(value);
+					break;
+				default:
+					throw new InvalidOperationException();
+			}
 		}
 	}
 }
