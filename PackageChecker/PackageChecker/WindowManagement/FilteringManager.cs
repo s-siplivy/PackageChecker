@@ -24,10 +24,12 @@ namespace PackageChecker.WindowManagement
 			"\t* - Value string.\n" +
 			"\nStar operator «*» represents any number of symbols.\n" +
 			"It is supported in the the beginning and in the end\n" +
-			"of the value string.\n";
+			"of the value string.\n" +
+			"\nIn case the value string isn't provided it is\n" +
+			"considered as an empty string value.\n";
 
 		protected const string regExpressionPatternSimplified = "(pv|fv|fp):(eq|ne|hl):*";
-		protected const string regExpressionPattern = "^(pv|fv|fp){1}:(eq|ne|hl){1}:(.+)$";
+		protected const string regExpressionPattern = "^(pv|fv|fp){1}:(eq|ne|hl){1}:(.*)$";
 		Regex regExpression;
 
 		protected ObservableCollection<string> expressions;

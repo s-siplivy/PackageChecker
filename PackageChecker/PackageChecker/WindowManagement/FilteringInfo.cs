@@ -87,6 +87,11 @@ namespace PackageChecker.WindowManagement
 
 		private bool ContainsWithPattern(string source, string value)
 		{
+			if (value == string.Empty)
+			{
+				return string.IsNullOrEmpty(source);
+			}
+
 			bool isStartsWith = false;
 			bool isEndsWith = false;
 			string localValue = value;
