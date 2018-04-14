@@ -29,6 +29,7 @@
 						<ListBox Name="ListFilterExpressions" ItemsSource="{Binding Path=FilteringExpressions}" />
 					</StackPanel>
 					<TextBlock Margin="5" DockPanel.Dock="Left" VerticalAlignment="Center">Filter expression</TextBlock>
+					<Button Name="Info" Margin="5" Width="20" Height="20" DockPanel.Dock="Right" ToolTip="Expressions info" Click="Info_Click">🛈</Button>
 					<Button Name="RemoveFilter" Margin="5" Width="20" Height="20" DockPanel.Dock="Right" Click="RemoveFilter_Click" ToolTip="Remove expression">✗</Button>
 					<Button Name="EditFilter" Margin="5" Width="20" Height="20" DockPanel.Dock="Right" VerticalAlignment="Center" Click="EditFilter_Click" ToolTip="Edit expression">✎</Button>
 					<Button Name="AddFilter" Margin="5" Width="20" Height="20" DockPanel.Dock="Right" VerticalAlignment="Center" Click="AddFilter_Click" ToolTip="Add expression">✓</Button>

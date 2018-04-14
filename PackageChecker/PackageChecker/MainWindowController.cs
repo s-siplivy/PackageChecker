@@ -120,6 +120,13 @@ namespace PackageChecker
 			}
 		}
 
+		public void FilteringExpressionInfo()
+		{
+			string helpMessage = filteringManager.GetHelpMessage();
+
+			ShowMessage(helpMessage, "Help");
+		}
+
 		public void ApplyFilesConditions()
 		{
 			if (windowState == WindowState.Folder || windowState == WindowState.ZipFile)

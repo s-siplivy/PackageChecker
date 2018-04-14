@@ -82,6 +82,11 @@ namespace PackageChecker
 			controller.RemoveFilteringExpression();
 		}
 
+		private void Info_Click(object sender, RoutedEventArgs e)
+		{
+			controller.FilteringExpressionInfo();
+		}
+
 		public void OnWindowClosing(object sender, CancelEventArgs e)
 		{
 			controller.SaveDataOnClose();

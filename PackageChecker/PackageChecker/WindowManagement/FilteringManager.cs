@@ -11,6 +11,21 @@ namespace PackageChecker.WindowManagement
 {
 	public class FilteringManager
 	{
+		protected const string helpMessage =
+			"The expession string supports the following format:\n" +
+			"\n\t{0}\n\n" +
+			"Where:" +
+			"\tpv - Product Version property;\n" +
+			"\tfv - File Version property;\n" +
+			"\tfp - File Path property;\n" +
+			"\teq - Equals operator;\n" +
+			"\tne - Not Equals operator;\n" +
+			"\thl - Highlight operator;\n" +
+			"\t* - Value string.\n" +
+			"\nStar operator «*» represents any number of symbols.\n" +
+			"It is supported in the the beginning and in the end\n" +
+			"of the value string.\n";
+
 		protected const string regExpressionPatternSimplified = "(pv|fv|fp):(eq|ne|hl):*";
 		protected const string regExpressionPattern = "^(pv|fv|fp){1}:(eq|ne|hl){1}:(.+)$";
 		Regex regExpression;
@@ -22,6 +37,11 @@ namespace PackageChecker.WindowManagement
 			this.expressions = expressions;
 
 			regExpression = new Regex(regExpressionPattern);
+		}
+
+		public string GetHelpMessage()
+		{
+			return string.Format(CultureInfo.InvariantCulture, helpMessage, regExpressionPatternSimplified);
 		}
 
 		public FilteringInfo GetFilteringInfo()
