@@ -62,6 +62,17 @@ namespace PackageChecker.FileSystem
 				{
 					fileRecords.Add(record);
 				}
+
+				if (info.DoHighlightFilePath(record.FilePath) ||
+					info.DoHighlightFileVersion(record.FileVersion) ||
+					info.DoHighlightProductVersion(record.ProductVersion))
+				{
+					record.DoHighlight = true;
+				}
+				else
+				{
+					record.DoHighlight = false;
+				}
 			}
 		}
 

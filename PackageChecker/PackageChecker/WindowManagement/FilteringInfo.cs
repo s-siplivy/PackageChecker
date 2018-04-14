@@ -26,14 +26,29 @@ namespace PackageChecker.WindowManagement
 			return IsValuePassCondition(ProductVersionCondition, productVersion);
 		}
 
+		public bool DoHighlightProductVersion(string productVersion)
+		{
+			return IsHighlightCondition(ProductVersionCondition, productVersion);
+		}
+
 		public bool IsCorrectFileVersion(string fileVersion)
 		{
 			return IsValuePassCondition(FileVersionCondition, fileVersion);
 		}
 
+		public bool DoHighlightFileVersion(string fileVersion)
+		{
+			return IsHighlightCondition(FileVersionCondition, fileVersion);
+		}
+
 		public bool IsCorrectFilePath(string filePath)
 		{
 			return IsValuePassCondition(FilePathCondition, filePath);
+		}
+
+		public bool DoHighlightFilePath(string filePath)
+		{
+			return IsHighlightCondition(FilePathCondition, filePath);
 		}
 
 		private bool IsValuePassCondition(FilteringCondition condition, string value)
@@ -55,6 +70,19 @@ namespace PackageChecker.WindowManagement
 			}
 
 			return true;
+		}
+
+		private bool IsHighlightCondition(FilteringCondition condition, string value)
+		{
+			foreach (string filter in condition.EntityHighlignt)
+			{
+				if (ContainsWithPattern(value, filter))
+				{
+					return true;
+				}
+			}
+
+			return false;
 		}
 
 		private bool ContainsWithPattern(string source, string value)

@@ -14,5 +14,6 @@ namespace PackageChecker.FileSystem
 
 		public string ProductVersion { get; set; }
 
+		public bool DoHighlight { get; set; }
 	}
 }

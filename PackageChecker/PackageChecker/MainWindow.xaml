@@ -40,6 +40,22 @@
 			<TextBlock Name="InfoText" Margin="5" VerticalAlignment="Center" Text="{Binding Path=CurrentFilteringStatus}" />
 		</DockPanel>
 		<ListView Name="FilesList" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" ItemsSource="{Binding FileRecords}">
+			<ListView.ItemContainerStyle>
+				<Style TargetType="{x:Type ListViewItem}">
+					<Style.Triggers>
+						<Trigger Property="IsSelected" Value="True">
+							<Setter Property="Background" Value="{x:Null}" />
+							<Setter Property="BorderBrush" Value="{x:Null}" />
+						</Trigger>
+						<DataTrigger Binding="{Binding DoHighlight}" Value="true" >
+							<Setter Property="Background" Value="Gainsboro" />
+						</DataTrigger>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter Property="Background" Value="LightSkyBlue" />
+						</Trigger>
+					</Style.Triggers>
+				</Style>
+			</ListView.ItemContainerStyle>
 			<ListView.View>
 				<GridView>
 					<GridViewColumn Header="Product Version" Width="220" DisplayMemberBinding="{Binding ProductVersion}" />
