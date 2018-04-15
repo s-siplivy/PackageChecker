@@ -18,6 +18,7 @@ namespace PackageChecker.WindowManagement
 			"\tpv - Product Version property;\n" +
 			"\tfv - File Version property;\n" +
 			"\tfp - File Path property;\n" +
+			"\tsg - Signature property;\n" +
 			"\teq - Equals operator;\n" +
 			"\tne - Not Equals operator;\n" +
 			"\thl - Highlight operator;\n" +
@@ -30,8 +31,8 @@ namespace PackageChecker.WindowManagement
 
 		protected const string hintMessage = "Format is «{0}». For more information, see help.";
 
-		protected const string regExpressionPatternSimplified = "(pv|fv|fp):(eq|ne|hl):*";
-		protected const string regExpressionPattern = "^(pv|fv|fp){1}:(eq|ne|hl){1}:(.*)$";
+		protected const string regExpressionPatternSimplified = "(pv|fv|fp|sg):(eq|ne|hl):*";
+		protected const string regExpressionPattern = "^(pv|fv|fp|sg){1}:(eq|ne|hl){1}:(.*)$";
 		Regex regExpression;
 
 		protected ObservableCollection<string> expressions;
@@ -131,6 +132,9 @@ namespace PackageChecker.WindowManagement
 					break;
 				case "fp":
 					AddExpressionByCondition(info.FilePathCondition, conditionType, value);
+					break;
+				case "sg":
+					AddExpressionByCondition(info.SignatureCondition, conditionType, value);
 					break;
 				default:
 					throw new InvalidOperationException();

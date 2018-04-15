@@ -14,26 +14,30 @@ namespace PackageChecker.WindowManagement
 		public FilteringCondition ProductVersionCondition { get; private set; }
 		public FilteringCondition FileVersionCondition { get; private set; }
 		public FilteringCondition FilePathCondition { get; private set; }
+		public FilteringCondition SignatureCondition { get; private set; }
 
 		public FilteringInfo()
 		{
 			ProductVersionCondition = new FilteringCondition();
 			FileVersionCondition = new FilteringCondition();
 			FilePathCondition = new FilteringCondition();
+			SignatureCondition = new FilteringCondition();
 		}
 
 		public bool IsCorrectFileRecord(FileRecord record)
 		{
 			return IsValuePassCondition(ProductVersionCondition, record.ProductVersion) &&
 				IsValuePassCondition(FileVersionCondition, record.FileVersion) &&
-				IsValuePassCondition(FilePathCondition, record.FilePath);
+				IsValuePassCondition(FilePathCondition, record.FilePath) &&
+				IsValuePassCondition(SignatureCondition, record.Signature);
 		}
 
 		public bool DoHighlightRecord(FileRecord record)
 		{
 			return IsHighlightCondition(ProductVersionCondition, record.ProductVersion) ||
 				IsHighlightCondition(FileVersionCondition, record.FileVersion) ||
-				IsHighlightCondition(FilePathCondition, record.FilePath);
+				IsHighlightCondition(FilePathCondition, record.FilePath) ||
+				IsHighlightCondition(SignatureCondition, record.Signature);
 		}
 
 		private bool IsValuePassCondition(FilteringCondition condition, string value)
