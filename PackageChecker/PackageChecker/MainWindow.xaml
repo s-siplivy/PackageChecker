@@ -8,6 +8,7 @@
         AllowDrop="True"
         Drop="Window_Drop"
         Closing="OnWindowClosing"
+        Icon="PackageIcon.ico"
         Title="Package Checker (0.2 Beta)" Height="750" Width="950" MinHeight="350" MinWidth="450">
 	<DockPanel Margin="10">
 		<DockPanel Name="PathPanel" DockPanel.Dock="Top">
