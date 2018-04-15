@@ -228,7 +228,7 @@ namespace PackageChecker
 			{
 				savedFilters = Serializer.LoadObjectFromFile(savedFiltersPath) as ObservableCollection<string>;
 			}
-			catch (SerializationException e)
+			catch (SerializationException)
 			{
 				ShowMessage("Failed to restore previous data. Corrupted files will be overwritten.", "Error");
 			}
