@@ -8,7 +8,7 @@ namespace PackageChecker.WindowManagement.Filtering
 	public class FilteringManager
 	{
 		protected const string helpMessage =
-			"The expession string supports the following format:\n" +
+			"The expression string supports the following format:\n" +
 			"\n\t{0}\n\n" +
 			"Where:" +
 			"\tpv - Product Version property;\n" +
@@ -19,7 +19,7 @@ namespace PackageChecker.WindowManagement.Filtering
 			"\tne - Not Equals operator;\n" +
 			"\thl - Highlight operator;\n" +
 			"\t* - Value string.\n" +
-			"\nStar operator «*» represents any number of symbols.\n" +
+			"\nThe operator «{1}» represents any number of symbols.\n" +
 			"It is supported in the the beginning and in the end\n" +
 			"of the value string.\n" +
 			"\nIn case the value string isn't provided it is\n" +
@@ -42,7 +42,7 @@ namespace PackageChecker.WindowManagement.Filtering
 
 		public string GetHelpMessage()
 		{
-			return string.Format(CultureInfo.InvariantCulture, helpMessage, regExpressionPatternSimplified);
+			return string.Format(CultureInfo.InvariantCulture, helpMessage, regExpressionPatternSimplified, FilteringInfo.specialSymbol);
 		}
 
 		public string GetExpressionPatternHint()

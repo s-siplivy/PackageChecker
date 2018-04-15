@@ -4,7 +4,7 @@ namespace PackageChecker.WindowManagement.Filtering
 {
 	public class FilteringInfo
 	{
-		private const string specialSymbol = "*";
+		internal const string specialSymbol = "*";
 
 		public FilteringCondition ProductVersionCondition { get; private set; }
 		public FilteringCondition FileVersionCondition { get; private set; }
