@@ -81,6 +81,29 @@ namespace PackageChecker
 			SetChooseMode();
 		}
 
+		public void ProcessDragAndDrop(string[] files)
+		{
+			if (files.Length != 1)
+			{
+				ShowMessage("Drag-and-Drop support only one record.", "Error");
+			}
+
+			string path = files[0];
+
+			if (FilesManager.IsFolder(path))
+			{
+				SetFolderState(path);
+			}
+			else if (FilesManager.IsZipFile(path))
+			{
+				SetZipState(path);
+			}
+			else
+			{
+				ShowMessage("File format isn't supported.", "Error");
+			}
+		}
+
 		public void AddFilteringExpression()
 		{
 			try

@@ -54,6 +54,12 @@ namespace PackageChecker
 			}
 		}
 
+		private void Window_Drop(object sender, DragEventArgs e)
+		{
+			string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+			controller.ProcessDragAndDrop(files);
+		}
+
 		private void SelectionCancel_Click(object sender, RoutedEventArgs e)
 		{
 			controller.SetEmptyState();

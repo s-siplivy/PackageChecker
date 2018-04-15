@@ -5,6 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PackageChecker"
         mc:Ignorable="d"
+        AllowDrop="True"
+        Drop="Window_Drop"
         Closing="OnWindowClosing"
         Title="Package Checker (0.2 Beta)" Height="650" Width="850" MinHeight="350" MinWidth="450">
 	<DockPanel Margin="10">

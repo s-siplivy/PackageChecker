@@ -36,6 +36,23 @@ namespace PackageChecker.FileSystem
 			this.allFileRecords = new List<FileRecord>();
 		}
 
+		public static bool IsFolder(string path)
+		{
+			FileAttributes attributes = File.GetAttributes(path);
+			return attributes.HasFlag(FileAttributes.Directory);
+		}
+
+		public static bool IsZipFile(string path)
+		{
+			if (IsFolder(path))
+			{
+				return false;
+			}
+
+			FileInfo info = new FileInfo(path);
+			return !string.IsNullOrEmpty(info.Extension) && info.Extension.Equals(".zip", StringComparison.OrdinalIgnoreCase);
+		}
+
 		public Task ResetFileRecords(string path, SearchType type)
 		{
 			Task task = new Task(() => UpdateFileRecordsAsync(path, type));
