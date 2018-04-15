@@ -34,6 +34,8 @@ namespace PackageChecker
 			filteringManager = new FilteringManager(dataModel.FilteringExpressions);
 			filesManager = new FilesManager(filteringManager, progressController, dataModel.FileRecords);
 
+			this.dataModel.CurrentFilteringExpressionHint = filteringManager.GetExpressionPatternHint();
+
 			UpdateFilteringStatus();
 			InitializeWindow();
 		}

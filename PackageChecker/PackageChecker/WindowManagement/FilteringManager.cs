@@ -28,6 +28,8 @@ namespace PackageChecker.WindowManagement
 			"\nIn case the value string isn't provided it is\n" +
 			"considered as an empty string value.\n";
 
+		protected const string hintMessage = "Format is «{0}». For more information, see help.";
+
 		protected const string regExpressionPatternSimplified = "(pv|fv|fp):(eq|ne|hl):*";
 		protected const string regExpressionPattern = "^(pv|fv|fp){1}:(eq|ne|hl){1}:(.*)$";
 		Regex regExpression;
@@ -44,6 +46,11 @@ namespace PackageChecker.WindowManagement
 		public string GetHelpMessage()
 		{
 			return string.Format(CultureInfo.InvariantCulture, helpMessage, regExpressionPatternSimplified);
+		}
+
+		public string GetExpressionPatternHint()
+		{
+			return string.Format(CultureInfo.InvariantCulture, hintMessage, regExpressionPatternSimplified);
 		}
 
 		public FilteringInfo GetFilteringInfo()

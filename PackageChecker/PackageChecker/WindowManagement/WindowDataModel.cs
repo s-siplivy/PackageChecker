@@ -16,6 +16,7 @@ namespace PackageChecker.WindowManagement
 		private string progressText;
 		private string pathValue;
 		private string currentFilteringExpression;
+		private string currentFilteringExpressionHint;
 		private string currentFilteringStatus;
 		private ObservableCollection<FileRecord> fileRecords;
 		private ObservableCollection<string> filteringExpressions;
@@ -96,6 +97,22 @@ namespace PackageChecker.WindowManagement
 				{
 					currentFilteringExpression = value;
 					PropertyChanged(this, new PropertyChangedEventArgs("CurrentFilteringExpression"));
+				}
+			}
+		}
+
+		public string CurrentFilteringExpressionHint
+		{
+			get
+			{
+				return currentFilteringExpressionHint;
+			}
+			set
+			{
+				if (currentFilteringExpressionHint != value)
+				{
+					currentFilteringExpressionHint = value;
+					PropertyChanged(this, new PropertyChangedEventArgs("CurrentFilteringExpressionHint"));
 				}
 			}
 		}
