@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PackageChecker.FileSystem
+namespace PackageChecker.FileSystem.DataModel
 {
 	public class FileRecord
 	{

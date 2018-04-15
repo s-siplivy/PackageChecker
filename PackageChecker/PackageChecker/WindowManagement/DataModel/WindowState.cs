@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PackageChecker.WindowManagement
+namespace PackageChecker.WindowManagement.DataModel
 {
 	public enum WindowState
 	{

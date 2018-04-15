@@ -1,4 +1,6 @@
-﻿using PackageChecker.WindowManagement;
+﻿using PackageChecker.FileSystem.DataModel;
+using PackageChecker.WindowManagement;
+using PackageChecker.WindowManagement.Filtering;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

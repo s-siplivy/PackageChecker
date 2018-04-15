@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace PackageChecker.WindowManagement
+namespace PackageChecker.WindowManagement.Filtering
 {
 	public class FilteringManager
 	{

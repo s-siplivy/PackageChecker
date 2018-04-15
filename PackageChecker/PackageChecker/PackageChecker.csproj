@@ -57,16 +57,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="FileSystem\FileRecord.cs" />
+    <Compile Include="FileSystem\DataModel\FileRecord.cs" />
     <Compile Include="FileSystem\FilesManager.cs" />
-    <Compile Include="FileSystem\SearchType.cs" />
+    <Compile Include="FileSystem\DataModel\SearchType.cs" />
     <Compile Include="FileSystem\Serializer.cs" />
-    <Compile Include="WindowManagement\FilteringCondition.cs" />
-    <Compile Include="WindowManagement\FilteringInfo.cs" />
-    <Compile Include="WindowManagement\FilteringManager.cs" />
+    <Compile Include="WindowManagement\Filtering\FilteringCondition.cs" />
+    <Compile Include="WindowManagement\Filtering\FilteringInfo.cs" />
+    <Compile Include="WindowManagement\Filtering\FilteringManager.cs" />
     <Compile Include="WindowManagement\ProgressBarController.cs" />
-    <Compile Include="WindowManagement\WindowDataModel.cs" />
-    <Compile Include="WindowManagement\WindowState.cs" />
+    <Compile Include="WindowManagement\DataModel\WindowDataModel.cs" />
+    <Compile Include="WindowManagement\DataModel\WindowState.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -82,7 +82,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MainWindowController.cs" />
+    <Compile Include="WindowManagement\MainWindowController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -1,5 +1,8 @@
 ﻿using PackageChecker.FileSystem;
+using PackageChecker.FileSystem.DataModel;
 using PackageChecker.WindowManagement;
+using PackageChecker.WindowManagement.DataModel;
+using PackageChecker.WindowManagement.Filtering;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,7 +13,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PackageChecker
+namespace PackageChecker.WindowManagement
 {
 	public class MainWindowController
 	{
