@@ -197,6 +197,18 @@ namespace PackageChecker
 				});
 		}
 
+		public void OpenSelectedRecord(FileRecord record)
+		{
+			if (windowState == WindowState.Folder)
+			{
+				FilesManager.OpenFileExplorer(dataModel.PathValue, record.FilePath);
+			}
+			else
+			{
+				ShowMessage("Open file location is only possible in the Folder mode.", "Error");
+			}
+		}
+
 		public void SaveDataOnClose()
 		{
 			Serializer.SaveObjectToFile(dataModel.FilteringExpressions, savedFiltersPath);

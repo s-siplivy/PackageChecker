@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -34,6 +35,22 @@ namespace PackageChecker.FileSystem
 			this.progressController = progressController;
 			this.fileRecords = fileRecords;
 			this.allFileRecords = new List<FileRecord>();
+		}
+
+		public static void OpenFileExplorer(string rootFolder, string relativePath)
+		{
+			string fullPath = Path.Combine(rootFolder, relativePath);
+			fullPath = ReplaseAltSeparators(fullPath);
+
+			if (!File.Exists(fullPath))
+			{
+				return;
+			}
+
+			const string explorerArgsFormat = "/select, \"{0}\"";
+			string argument = string.Format(CultureInfo.InvariantCulture, explorerArgsFormat, fullPath);
+
+			Process.Start("explorer.exe", argument);
 		}
 
 		public static bool IsFolder(string path)
@@ -150,7 +167,7 @@ namespace PackageChecker.FileSystem
 					if (entry.FullName.EndsWith(".dll", StringComparison.OrdinalIgnoreCase) ||
 						entry.FullName.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
 					{
-						string destinationPath = Path.Combine(dirPath, entry.FullName.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar));
+						string destinationPath = Path.Combine(dirPath, ReplaseAltSeparators(entry.FullName));
 
 						FileInfo destinationPathFileInfo = new FileInfo(destinationPath);
 						if (!destinationPathFileInfo.Directory.Exists)
@@ -227,6 +244,11 @@ namespace PackageChecker.FileSystem
 			Uri fileUri = new Uri(fullPath);
 			Uri referenceUri = new Uri(rootPath);
 			return referenceUri.MakeRelativeUri(fileUri).ToString().Replace("%20", " ");
+		}
+
+		private static string ReplaseAltSeparators(string path)
+		{
+			return path.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
 		}
 
 		private void UpdateProgress(int progress)

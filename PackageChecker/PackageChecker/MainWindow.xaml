@@ -65,7 +65,7 @@
 		<DockPanel DockPanel.Dock="Top">
 			<TextBlock Name="InfoText" Margin="5" VerticalAlignment="Center" Text="{Binding Path=CurrentFilteringStatus}" />
 		</DockPanel>
-		<ListView Name="FilesList" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" ItemsSource="{Binding FileRecords}">
+		<ListView Name="FilesList" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" ItemsSource="{Binding FileRecords}" MouseDoubleClick="FilesList_MouseDoubleClick">
 			<ListView.ItemContainerStyle>
 				<Style TargetType="{x:Type ListViewItem}">
 					<Style.Triggers>

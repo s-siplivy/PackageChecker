@@ -95,6 +95,17 @@ namespace PackageChecker
 			controller.FilteringExpressionInfo();
 		}
 
+		private void FilesList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+		{
+			ListView listView = (ListView)sender;
+			FileRecord selectedRecord = (FileRecord)listView.SelectedItem;
+
+			if (selectedRecord != null)
+			{
+				controller.OpenSelectedRecord(selectedRecord);
+			}
+		}
+
 		public void OnWindowClosing(object sender, CancelEventArgs e)
 		{
 			controller.SaveDataOnClose();
