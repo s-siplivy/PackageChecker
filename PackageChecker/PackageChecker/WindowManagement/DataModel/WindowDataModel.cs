@@ -1,12 +1,6 @@
-﻿using PackageChecker.FileSystem;
-using PackageChecker.FileSystem.DataModel;
-using System;
-using System.Collections.Generic;
+﻿using PackageChecker.FileSystem.DataModel;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PackageChecker.WindowManagement.DataModel
 {
