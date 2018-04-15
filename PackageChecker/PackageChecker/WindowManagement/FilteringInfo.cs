@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PackageChecker.FileSystem;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,34 +22,18 @@ namespace PackageChecker.WindowManagement
 			FilePathCondition = new FilteringCondition();
 		}
 
-		public bool IsCorrectProductVersion(string productVersion)
+		public bool IsCorrectFileRecord(FileRecord record)
 		{
-			return IsValuePassCondition(ProductVersionCondition, productVersion);
+			return IsValuePassCondition(ProductVersionCondition, record.ProductVersion) &&
+				IsValuePassCondition(FileVersionCondition, record.FileVersion) &&
+				IsValuePassCondition(FilePathCondition, record.FilePath);
 		}
 
-		public bool DoHighlightProductVersion(string productVersion)
+		public bool DoHighlightRecord(FileRecord record)
 		{
-			return IsHighlightCondition(ProductVersionCondition, productVersion);
-		}
-
-		public bool IsCorrectFileVersion(string fileVersion)
-		{
-			return IsValuePassCondition(FileVersionCondition, fileVersion);
-		}
-
-		public bool DoHighlightFileVersion(string fileVersion)
-		{
-			return IsHighlightCondition(FileVersionCondition, fileVersion);
-		}
-
-		public bool IsCorrectFilePath(string filePath)
-		{
-			return IsValuePassCondition(FilePathCondition, filePath);
-		}
-
-		public bool DoHighlightFilePath(string filePath)
-		{
-			return IsHighlightCondition(FilePathCondition, filePath);
+			return IsHighlightCondition(ProductVersionCondition, record.ProductVersion) ||
+				IsHighlightCondition(FileVersionCondition, record.FileVersion) ||
+				IsHighlightCondition(FilePathCondition, record.FilePath);
 		}
 
 		private bool IsValuePassCondition(FilteringCondition condition, string value)
