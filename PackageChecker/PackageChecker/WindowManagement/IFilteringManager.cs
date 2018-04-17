@@ -1,6 +1,7 @@
-﻿using System;
+﻿using PackageChecker.Filtering;
+using System;
 
-namespace PackageChecker.Filtering
+namespace PackageChecker.WindowManagement
 {
 	internal interface IFilteringManager
 	{

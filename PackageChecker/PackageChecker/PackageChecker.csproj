@@ -65,7 +65,7 @@
     <Compile Include="Files\FileSearchType.cs" />
     <Compile Include="Files\Serializer.cs" />
     <Compile Include="BindingBase\BindableBase.cs" />
-    <Compile Include="Filtering\IFilteringManager.cs" />
+    <Compile Include="WindowManagement\IFilteringManager.cs" />
     <Compile Include="Models\FilesListModel.cs" />
     <Compile Include="Models\FilteringModel.cs" />
     <Compile Include="Filtering\FilteringCondition.cs" />
