@@ -11,12 +11,12 @@ namespace PackageChecker.WindowManagement.Filtering
 			"The expression string supports the following format:\n" +
 			"\n\t{0}\n\n" +
 			"Where:" +
+			"\tin - Include operator;\n" +
+			"\thl - Highlight operator;\n" +
 			"\tpv - Product Version property;\n" +
 			"\tfv - File Version property;\n" +
 			"\tfp - File Path property;\n" +
 			"\tsg - Signature property;\n" +
-			"\tin - Include operator;\n" +
-			"\thl - Highlight operator;\n" +
 			"\t* - Value string.\n" +
 			"\nThe operator «{1}» inverts boolean value of operators.\n" +
 			"It is supported only in the the beginning of the value string.\n" +
@@ -28,8 +28,8 @@ namespace PackageChecker.WindowManagement.Filtering
 
 		protected const string hintMessage = "Format is «{0}». For more information, see help.";
 
-		protected const string regExpressionPatternSimplified = "(pv|fv|fp|sg):(in|hl):*";
-		protected const string regExpressionPattern = "^(pv|fv|fp|sg){1}:(in|hl){1}:(.*)$";
+		protected const string regExpressionPatternSimplified = "(in|hl):(pv|fv|fp|sg)=*";
+		protected const string regExpressionPattern = "^(in|hl){1}:(pv|fv|fp|sg){1}=(.*)$";
 		Regex regExpression;
 
 		protected ObservableCollection<string> expressions;
@@ -111,10 +111,10 @@ namespace PackageChecker.WindowManagement.Filtering
 		{
 			Match expressionGroups = regExpression.Match(expression);
 
-			string property = expressionGroups.Groups[1].Value;
-			string condition = expressionGroups.Groups[2].Value;
+			string @operator = expressionGroups.Groups[1].Value;
+			string property = expressionGroups.Groups[2].Value;
 			string value = expressionGroups.Groups[3].Value;
-			return new Tuple<string, string, string>(property, condition, value);
+			return new Tuple<string, string, string>(property, @operator, value);
 		}
 
 		protected void AddExpressionByProperty(FilteringInfo info, string propertyType, string conditionType, string value)

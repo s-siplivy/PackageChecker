@@ -12,7 +12,7 @@ namespace PackageChecker.WindowManagement
 {
 	public class MainWindowController
 	{
-		protected const string savedFiltersPath = "filters-v1.dat";
+		protected const string savedFiltersPath = "filters-v2.dat";
 		protected const string filteringStatusTemplate = "Files shown: {0}. Files hidden: {1}.";
 
 		public WindowState windowState { get; private set; }
