@@ -53,17 +53,17 @@ namespace PackageChecker.Models
 			"\tfv - File Version property;\n" +
 			"\tfp - File Path property;\n" +
 			"\tsg - Signature property;\n" +
+			"\t= - Equals operator;\n" +
+			"\t!= - Not Equals operator;\n" +
 			"\t* - Value string.\n" +
-			"\nThe operator «{1}» inverts boolean value of operators.\n" +
-			"It is supported only in the the beginning of the value string.\n" +
-			"\nThe operator «{2}» represents any number of symbols.\n" +
+			"\nThe operator «{1}» represents any number of symbols.\n" +
 			"It is supported in the the beginning and in the end of the value string.\n" +
 			"\nIn case the value string isn't provided it is considered as an empty\n" +
 			"string value.\n";
 
 		private readonly Regex _regExpression;
-		private const string _regExpressionPattern = "^(in|hl){1}:(pv|fv|fp|sg){1}=(.*)$";
-		private const string _regExpressionPatternSimplified = "(in|hl):(pv|fv|fp|sg)=*";
+		private const string _regExpressionPattern = "^(in|hl){1}:(pv|fv|fp|sg){1}(=|!=){1}(.*)$";
+		private const string _regExpressionPatternSimplified = "(in|hl):(pv|fv|fp|sg)(=|!=)*";
 		private const string _hintMessage = "Format is «{0}». For more information, see help.";
 		#endregion //Private Properties
 
@@ -121,8 +121,8 @@ namespace PackageChecker.Models
 
 			foreach (string expression in _filteringExpressions)
 			{
-				Tuple<string, string, string> filter = ParseExpression(expression);
-				AddExpressionByProperty(info, filter.Item1, filter.Item2, filter.Item3);
+				Tuple<string, string, string, string> filter = ParseExpression(expression);
+				AddExpressionByProperty(info, filter.Item1, filter.Item2, filter.Item3, filter.Item4);
 			}
 
 			return info;
@@ -182,51 +182,54 @@ namespace PackageChecker.Models
 
 		internal string GetHelpMessage()
 		{
-			return string.Format(CultureInfo.InvariantCulture, _helpMessage, _regExpressionPatternSimplified, FilteringInfo.notSymbol, FilteringInfo.specialSymbol);
+			return string.Format(CultureInfo.InvariantCulture, _helpMessage, _regExpressionPatternSimplified, FilteringInfo.specialSymbol);
 		}
 		#endregion //Commands Implementation
 
 		#region Private Methods
-		private Tuple<string, string, string> ParseExpression(string expression)
+		private Tuple<string, string, string, string> ParseExpression(string expression)
 		{
 			Match expressionGroups = _regExpression.Match(expression);
 
 			string @operator = expressionGroups.Groups[1].Value;
 			string property = expressionGroups.Groups[2].Value;
-			string value = expressionGroups.Groups[3].Value;
-			return new Tuple<string, string, string>(property, @operator, value);
+			string equalOperator = expressionGroups.Groups[3].Value;
+			string value = expressionGroups.Groups[4].Value;
+			return new Tuple<string, string, string, string>(property, @operator, equalOperator, value);
 		}
 
-		private void AddExpressionByProperty(FilteringInfo info, string propertyType, string conditionType, string value)
+		private void AddExpressionByProperty(FilteringInfo info, string propertyType, string conditionType, string equalOperator, string value)
 		{
 			switch (propertyType)
 			{
 				case "pv":
-					AddExpressionByCondition(info.ProductVersionCondition, conditionType, value);
+					AddExpressionByCondition(info.ProductVersionCondition, conditionType, equalOperator, value);
 					break;
 				case "fv":
-					AddExpressionByCondition(info.FileVersionCondition, conditionType, value);
+					AddExpressionByCondition(info.FileVersionCondition, conditionType, equalOperator, value);
 					break;
 				case "fp":
-					AddExpressionByCondition(info.FilePathCondition, conditionType, value);
+					AddExpressionByCondition(info.FilePathCondition, conditionType, equalOperator, value);
 					break;
 				case "sg":
-					AddExpressionByCondition(info.SignatureCondition, conditionType, value);
+					AddExpressionByCondition(info.SignatureCondition, conditionType, equalOperator, value);
 					break;
 				default:
 					throw new InvalidOperationException();
 			}
 		}
 
-		private void AddExpressionByCondition(FilteringCondition condition, string conditionType, string value)
+		private void AddExpressionByCondition(FilteringCondition condition, string conditionType, string equalOperator, string value)
 		{
+			string resultValue = equalOperator == "!=" ? FilteringInfo.notSymbol + value : value;
+
 			switch (conditionType)
 			{
 				case "in":
-					condition.EntityInclude.Add(value);
+					condition.EntityInclude.Add(resultValue);
 					break;
 				case "hl":
-					condition.EntityHighlignt.Add(value);
+					condition.EntityHighlignt.Add(resultValue);
 					break;
 				default:
 					throw new InvalidOperationException();
