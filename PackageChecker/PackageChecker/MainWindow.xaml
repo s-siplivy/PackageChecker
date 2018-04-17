@@ -7,8 +7,6 @@
         xmlns:ViewModel="clr-namespace:PackageChecker.ViewModels"
         mc:Ignorable="d"
         AllowDrop="True"
-        Drop="Window_Drop"
-        Closing="OnWindowClosing"
         Icon="PackageIcon.ico"
         Title="Package Checker (0.2 Beta)" Height="750" Width="950" MinHeight="350" MinWidth="450">
 	<DockPanel Margin="10">
@@ -72,7 +70,7 @@
 		</Border>
 		<DockPanel DockPanel.Dock="Top" Name="FilesPanel">
 			<TextBlock Name="InfoText" Margin="5" VerticalAlignment="Center" Text="{Binding Path=CurrentFilteringStatus}" DockPanel.Dock="Top"/>
-			<ListView Name="FilesList" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" ItemsSource="{Binding FileRecords}" MouseDoubleClick="FilesList_MouseDoubleClick">
+			<ListView Name="FilesList" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" ItemsSource="{Binding FileRecords}">
 				<ListView.ItemContainerStyle>
 					<Style TargetType="{x:Type ListViewItem}">
 						<Style.Triggers>

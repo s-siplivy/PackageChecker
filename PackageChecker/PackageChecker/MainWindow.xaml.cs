@@ -18,9 +18,6 @@ namespace PackageChecker
 	{
 		private const string savedFiltersPath = "filters-v2.dat";
 
-		private FilteringViewModel filteringViewModel;
-		WindowViewModel windowViewModel;
-
 		public MainWindow()
 		{
 			InitializeComponent();
@@ -28,29 +25,31 @@ namespace PackageChecker
 			ProgressBarViewModel progressBarViewModel = new ProgressBarViewModel();
 			ProgressPanel.DataContext = progressBarViewModel;
 
-			filteringViewModel = new FilteringViewModel();
+			FilteringViewModel filteringViewModel = new FilteringViewModel();
+			LoadFiltersData(filteringViewModel);
+			Closing += (s, e) => SaveFiltersData(filteringViewModel);
 			FilterPanel.DataContext = filteringViewModel;
 
 			FilesListViewModel filesListViewModel = new FilesListViewModel(filteringViewModel.GetFilteringManager(), progressBarViewModel.GetProgressBarManager());
 			FilesPanel.DataContext = filesListViewModel;
 
-			windowViewModel = new WindowViewModel(progressBarViewModel.GetProgressBarManager(), filesListViewModel.GetFilesListManager());
+			WindowViewModel windowViewModel = new WindowViewModel(progressBarViewModel.GetProgressBarManager(), filesListViewModel.GetFilesListManager());
+			this.Drop += (s, e) => ProcessWindowDrop(e, windowViewModel);
 			DataContext = windowViewModel;
 
-			LoadSavedData();
+			FilesList.MouseDoubleClick += (s, e) => FilesList_MouseDoubleClick(s, windowViewModel.WindowState, windowViewModel.PathValue);
 
 			RegisterUncaughtExpectionsHandler(AppDomain.CurrentDomain);
 		}
 
-		private void Window_Drop(object sender, DragEventArgs e)
+		private void ProcessWindowDrop(DragEventArgs args, WindowViewModel windowViewModel)
 		{
 			// Workaround for MVVM drag&drop functionality
 			// TODO: Imlement MVVM drag&drop approach
-			string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+			string[] files = (string[])args.Data.GetData(DataFormats.FileDrop);
 			windowViewModel.ProcessDragAndDrop.Execute(files);
 		}
-
-		private void FilesList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+		private void FilesList_MouseDoubleClick(object sender, MainWindowState currentState, string rootFoler)
 		{
 			// Workaround for MVVM double click functionality
 			// TODO: Imlement MVVM double click approach
@@ -59,9 +58,9 @@ namespace PackageChecker
 
 			if (selectedRecord != null)
 			{
-				if (windowViewModel.WindowState == MainWindowState.Folder)
+				if (currentState == MainWindowState.Folder)
 				{
-					FilesHelper.OpenFileExplorer(windowViewModel.PathValue, selectedRecord.FilePath);
+					FilesHelper.OpenFileExplorer(rootFoler, selectedRecord.FilePath);
 				}
 				else
 				{
@@ -70,12 +69,7 @@ namespace PackageChecker
 			}
 		}
 
-		private void OnWindowClosing(object sender, CancelEventArgs e)
-		{
-			Serializer.SaveObjectToFile(filteringViewModel.GetState(), savedFiltersPath);
-		}
-
-		private void LoadSavedData()
+		private void LoadFiltersData(FilteringViewModel filteringViewModel)
 		{
 			FilteringModel.FilteringState savedFilters = null;
 
@@ -92,6 +86,11 @@ namespace PackageChecker
 			{
 				filteringViewModel.SetState(savedFilters);
 			}
+		}
+
+		private void SaveFiltersData(FilteringViewModel filteringViewModel)
+		{
+			Serializer.SaveObjectToFile(filteringViewModel.GetState(), savedFiltersPath);
 		}
 
 		private void RegisterUncaughtExpectionsHandler(AppDomain domain)
