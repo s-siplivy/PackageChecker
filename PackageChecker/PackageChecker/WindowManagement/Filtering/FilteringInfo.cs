@@ -4,6 +4,7 @@ namespace PackageChecker.WindowManagement.Filtering
 {
 	public class FilteringInfo
 	{
+		internal const string notSymbol = "!";
 		internal const string specialSymbol = "*";
 
 		public FilteringCondition ProductVersionCondition { get; private set; }
@@ -37,17 +38,9 @@ namespace PackageChecker.WindowManagement.Filtering
 
 		private bool IsValuePassCondition(FilteringCondition condition, string value)
 		{
-			foreach (string filter in condition.EntityEquals)
+			foreach (string filter in condition.EntityInclude)
 			{
 				if (!ContainsWithPattern(value, filter))
-				{
-					return false;
-				}
-			}
-
-			foreach (string filter in condition.EntityNotEquals)
-			{
-				if (ContainsWithPattern(value, filter))
 				{
 					return false;
 				}
@@ -71,14 +64,21 @@ namespace PackageChecker.WindowManagement.Filtering
 
 		private bool ContainsWithPattern(string source, string value)
 		{
-			if (value == string.Empty)
-			{
-				return string.IsNullOrEmpty(source);
-			}
-
+			bool invertResult = false;
 			bool isStartsWith = false;
 			bool isEndsWith = false;
 			string localValue = value;
+
+			if (localValue.StartsWith(notSymbol))
+			{
+				invertResult = true;
+				localValue = localValue.Substring(1, localValue.Length - 1);
+			}
+
+			if (string.IsNullOrEmpty(localValue))
+			{
+				return string.IsNullOrEmpty(source) ^ invertResult;
+			}
 
 			if (localValue.StartsWith(specialSymbol))
 			{
@@ -94,18 +94,18 @@ namespace PackageChecker.WindowManagement.Filtering
 
 			if (isStartsWith && isEndsWith)
 			{
-				return source.Contains(localValue);
+				return source.Contains(localValue) ^ invertResult;
 			}
 			else if (isStartsWith)
 			{
-				return source.StartsWith(localValue);
+				return source.StartsWith(localValue) ^ invertResult;
 			}
 			else if (isEndsWith)
 			{
-				return source.EndsWith(localValue);
+				return source.EndsWith(localValue) ^ invertResult;
 			}
 
-			return source == localValue;
+			return source == localValue ^ invertResult;
 		}
 	}
 }

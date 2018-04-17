@@ -15,11 +15,12 @@ namespace PackageChecker.WindowManagement.Filtering
 			"\tfv - File Version property;\n" +
 			"\tfp - File Path property;\n" +
 			"\tsg - Signature property;\n" +
-			"\teq - Equals operator;\n" +
-			"\tne - Not Equals operator;\n" +
+			"\tin - Include operator;\n" +
 			"\thl - Highlight operator;\n" +
 			"\t* - Value string.\n" +
-			"\nThe operator «{1}» represents any number of symbols.\n" +
+			"\nThe operator «{1}» inverts boolean value of operators.\n" +
+			"It is supported only in the the beginning of the value string.\n" +
+			"\nThe operator «{2}» represents any number of symbols.\n" +
 			"It is supported in the the beginning and in the end\n" +
 			"of the value string.\n" +
 			"\nIn case the value string isn't provided it is\n" +
@@ -27,8 +28,8 @@ namespace PackageChecker.WindowManagement.Filtering
 
 		protected const string hintMessage = "Format is «{0}». For more information, see help.";
 
-		protected const string regExpressionPatternSimplified = "(pv|fv|fp|sg):(eq|ne|hl):*";
-		protected const string regExpressionPattern = "^(pv|fv|fp|sg){1}:(eq|ne|hl){1}:(.*)$";
+		protected const string regExpressionPatternSimplified = "(pv|fv|fp|sg):(in|hl):*";
+		protected const string regExpressionPattern = "^(pv|fv|fp|sg){1}:(in|hl){1}:(.*)$";
 		Regex regExpression;
 
 		protected ObservableCollection<string> expressions;
@@ -42,7 +43,7 @@ namespace PackageChecker.WindowManagement.Filtering
 
 		public string GetHelpMessage()
 		{
-			return string.Format(CultureInfo.InvariantCulture, helpMessage, regExpressionPatternSimplified, FilteringInfo.specialSymbol);
+			return string.Format(CultureInfo.InvariantCulture, helpMessage, regExpressionPatternSimplified, FilteringInfo.notSymbol, FilteringInfo.specialSymbol);
 		}
 
 		public string GetExpressionPatternHint()
@@ -141,11 +142,8 @@ namespace PackageChecker.WindowManagement.Filtering
 		{
 			switch (conditionType)
 			{
-				case "eq":
-					condition.EntityEquals.Add(value);
-					break;
-				case "ne":
-					condition.EntityNotEquals.Add(value);
+				case "in":
+					condition.EntityInclude.Add(value);
 					break;
 				case "hl":
 					condition.EntityHighlignt.Add(value);
