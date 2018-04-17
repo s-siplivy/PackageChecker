@@ -18,7 +18,7 @@
 		</DockPanel>
 		<DockPanel Name="ProgressPanel" DockPanel.Dock="Top">
 			<Border BorderBrush="{x:Null}" Margin="5" Height="30" Width="100" DockPanel.Dock="Right">
-				<TextBlock Name="ProgressText"  Text="{Binding ProgressText}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+				<TextBlock Name="ProgressText"  Text="{Binding ProgressText, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Center" />
 			</Border>
 			<ProgressBar Name="ProgressBar" Margin="5" Height="30" Value="{Binding Path=ProgressBarCurrent}" IsIndeterminate="{Binding Path=IsProgressBarIndeterminate}" />
 		</DockPanel>

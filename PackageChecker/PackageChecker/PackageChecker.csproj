@@ -70,8 +70,10 @@
     <Compile Include="Models\FilteringModel.cs" />
     <Compile Include="Filtering\FilteringCondition.cs" />
     <Compile Include="Filtering\FilteringInfo.cs" />
+    <Compile Include="Models\ProgressBarModel.cs" />
     <Compile Include="ViewModels\FilteringViewModel.cs" />
-    <Compile Include="WindowManagement\ProgressBarController.cs" />
+    <Compile Include="ViewModels\ProgressBarViewModel.cs" />
+    <Compile Include="WindowManagement\IProgressBarManager.cs" />
     <Compile Include="WindowManagement\DataModel\WindowDataModel.cs" />
     <Compile Include="WindowManagement\DataModel\WindowState.cs" />
     <Compile Include="WindowManagement\WindowHelper.cs" />

@@ -18,6 +18,7 @@ namespace PackageChecker.WindowManagement
 
 		public WindowState windowState { get; private set; }
 		private FilteringViewModel filteringViewModel;
+		private ProgressBarViewModel progressBarViewModel;
 		protected FilesManager filesManager;
 		protected MainWindow window;
 		protected WindowDataModel dataModel;
@@ -26,12 +27,14 @@ namespace PackageChecker.WindowManagement
 		{
 			this.window = window;
 			this.dataModel = dataModel;
-			ProgressBarController progressController = new ProgressBarController(dataModel);
+
+			progressBarViewModel = new ProgressBarViewModel();
+			window.ProgressPanel.DataContext = progressBarViewModel;
 
 			filteringViewModel = new FilteringViewModel();
 			window.FilterPanel.DataContext = filteringViewModel;
 
-			filesManager = new FilesManager(filteringViewModel.GetFilteringManager(), progressController, dataModel.FileRecords);
+			filesManager = new FilesManager(filteringViewModel.GetFilteringManager(), progressBarViewModel.GetFilteringManager(), dataModel.FileRecords);
 
 			LoadSavedData();
 			UpdateFilteringStatus();

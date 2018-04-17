@@ -16,7 +16,7 @@ namespace PackageChecker.FileSystem
 {
 	public class FilesManager
 	{
-		private ProgressBarController progressController;
+		private IProgressBarManager progressManager;
 		private IFilteringManager filteringManager;
 		private ObservableCollection<FileRecord> fileRecords;
 		private List<FileRecord> allFileRecords;
@@ -31,10 +31,10 @@ namespace PackageChecker.FileSystem
 			get { return fileRecords.Count; }
 		}
 
-		internal FilesManager(IFilteringManager filteringManager, ProgressBarController progressController, ObservableCollection<FileRecord> fileRecords)
+		internal FilesManager(IFilteringManager filteringManager, IProgressBarManager progressManager, ObservableCollection<FileRecord> fileRecords)
 		{
 			this.filteringManager = filteringManager;
-			this.progressController = progressController;
+			this.progressManager = progressManager;
 			this.fileRecords = fileRecords;
 			this.allFileRecords = new List<FileRecord>();
 
@@ -263,17 +263,17 @@ namespace PackageChecker.FileSystem
 
 		private void UpdateProgress(int progress)
 		{
-			DispatcherInvoke(() => progressController.Progress = progress);
+			DispatcherInvoke(() => progressManager.Progress = progress);
 		}
 
 		private void UpdateProgressText(string progressText)
 		{
-			DispatcherInvoke(() => progressController.ProgressText = progressText);
+			DispatcherInvoke(() => progressManager.ProgressText = progressText);
 		}
 
 		private void IsProgressIndeterminate(bool isIndeterminate)
 		{
-			DispatcherInvoke(() => progressController.IsIndeterminate = isIndeterminate);
+			DispatcherInvoke(() => progressManager.IsIndeterminate = isIndeterminate);
 		}
 
 		private void DispatcherInvoke(Action action)

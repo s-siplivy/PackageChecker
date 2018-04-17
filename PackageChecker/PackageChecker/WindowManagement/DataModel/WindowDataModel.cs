@@ -6,60 +6,9 @@ namespace PackageChecker.WindowManagement.DataModel
 {
 	public class WindowDataModel : INotifyPropertyChanged
 	{
-		private bool isProgressBarIndeterminate;
-		private int progressBarCurrent;
-		private string progressText;
 		private string pathValue;
 		private string currentFilteringStatus;
 		private ObservableCollection<FileRecord> fileRecords;
-
-		public bool IsProgressBarIndeterminate
-		{
-			get
-			{
-				return isProgressBarIndeterminate;
-			}
-			set
-			{
-				if (isProgressBarIndeterminate != value)
-				{
-					isProgressBarIndeterminate = value;
-					PropertyChanged(this, new PropertyChangedEventArgs("IsProgressBarIndeterminate"));
-				}
-			}
-		}
-
-		public int ProgressBarCurrent
-		{
-			get
-			{
-				return progressBarCurrent;
-			}
-			set
-			{
-				if (progressBarCurrent != value)
-				{
-					progressBarCurrent = value;
-					PropertyChanged(this, new PropertyChangedEventArgs("ProgressBarCurrent"));
-				}
-			}
-		}
-
-		public string ProgressText
-		{
-			get
-			{
-				return progressText;
-			}
-			set
-			{
-				if (progressText != value)
-				{
-					progressText = value;
-					PropertyChanged(this, new PropertyChangedEventArgs("ProgressText"));
-				}
-			}
-		}
 
 		public string PathValue
 		{
@@ -112,9 +61,6 @@ namespace PackageChecker.WindowManagement.DataModel
 
 		public WindowDataModel()
 		{
-			isProgressBarIndeterminate = false;
-			progressBarCurrent = 0;
-			progressText = string.Empty;
 			pathValue = string.Empty;
 			fileRecords = new ObservableCollection<FileRecord>();
 
