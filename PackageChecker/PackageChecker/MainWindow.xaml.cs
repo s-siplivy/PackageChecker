@@ -1,5 +1,4 @@
-﻿using PackageChecker.FileSystem;
-using PackageChecker.FileSystem.DataModel;
+﻿using PackageChecker.Files;
 using PackageChecker.WindowManagement;
 using PackageChecker.WindowManagement.DataModel;
 using System;
@@ -30,7 +29,7 @@ namespace PackageChecker
 
 		private void ArchiveChoose_Click(object sender, RoutedEventArgs e)
 		{
-			string fileName = PickerDialog.PickZipDialog();
+			string fileName = FilesHelper.PickZipDialog();
 			if (!string.IsNullOrEmpty(fileName))
 			{
 				controller.SetZipState(fileName);
@@ -39,7 +38,7 @@ namespace PackageChecker
 
 		private void FolderChoose_Click(object sender, RoutedEventArgs e)
 		{
-			string folderPath = PickerDialog.PickFolderDialog();
+			string folderPath = FilesHelper.PickFolderDialog();
 			if (!string.IsNullOrEmpty(folderPath))
 			{
 				controller.SetFolderState(folderPath);

@@ -61,18 +61,20 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BindingBase\BindCommand.cs" />
-    <Compile Include="FileSystem\DataModel\FileRecord.cs" />
-    <Compile Include="FileSystem\FilesManager.cs" />
-    <Compile Include="FileSystem\DataModel\SearchType.cs" />
-    <Compile Include="FileSystem\Serializer.cs" />
+    <Compile Include="Files\FileRecord.cs" />
+    <Compile Include="Files\FileSearchType.cs" />
+    <Compile Include="Files\Serializer.cs" />
     <Compile Include="BindingBase\BindableBase.cs" />
     <Compile Include="Filtering\IFilteringManager.cs" />
+    <Compile Include="Models\FilesListModel.cs" />
     <Compile Include="Models\FilteringModel.cs" />
     <Compile Include="Filtering\FilteringCondition.cs" />
     <Compile Include="Filtering\FilteringInfo.cs" />
     <Compile Include="Models\ProgressBarModel.cs" />
+    <Compile Include="ViewModels\FilesListViewModel.cs" />
     <Compile Include="ViewModels\FilteringViewModel.cs" />
     <Compile Include="ViewModels\ProgressBarViewModel.cs" />
+    <Compile Include="WindowManagement\IFilesListManager.cs" />
     <Compile Include="WindowManagement\IProgressBarManager.cs" />
     <Compile Include="WindowManagement\DataModel\WindowDataModel.cs" />
     <Compile Include="WindowManagement\DataModel\WindowState.cs" />
@@ -85,7 +87,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="FileSystem\PickerDialog.cs" />
+    <Compile Include="Files\FilesHelper.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

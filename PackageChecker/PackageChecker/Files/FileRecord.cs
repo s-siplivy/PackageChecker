@@ -1,4 +1,4 @@
-﻿namespace PackageChecker.FileSystem.DataModel
+﻿namespace PackageChecker.Files
 {
 	public class FileRecord
 	{

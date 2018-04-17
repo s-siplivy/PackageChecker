@@ -1,4 +1,4 @@
-﻿using PackageChecker.FileSystem.DataModel;
+﻿using PackageChecker.Files;
 
 namespace PackageChecker.Filtering
 {

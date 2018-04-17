@@ -1,5 +1,4 @@
-﻿using PackageChecker.FileSystem;
-using PackageChecker.FileSystem.DataModel;
+﻿using PackageChecker.Files;
 using PackageChecker.Models;
 using PackageChecker.ViewModels;
 using PackageChecker.WindowManagement.DataModel;
@@ -14,12 +13,12 @@ namespace PackageChecker.WindowManagement
 	public class MainWindowController
 	{
 		protected const string savedFiltersPath = "filters-v2.dat";
-		protected const string filteringStatusTemplate = "Files shown: {0}. Files hidden: {1}.";
 
 		public WindowState windowState { get; private set; }
 		private FilteringViewModel filteringViewModel;
 		private ProgressBarViewModel progressBarViewModel;
-		protected FilesManager filesManager;
+		private FilesListViewModel filesListViewModel;
+		private IFilesListManager filesListManager;
 		protected MainWindow window;
 		protected WindowDataModel dataModel;
 
@@ -34,10 +33,11 @@ namespace PackageChecker.WindowManagement
 			filteringViewModel = new FilteringViewModel();
 			window.FilterPanel.DataContext = filteringViewModel;
 
-			filesManager = new FilesManager(filteringViewModel.GetFilteringManager(), progressBarViewModel.GetFilteringManager(), dataModel.FileRecords);
+			filesListViewModel = new FilesListViewModel(filteringViewModel.GetFilteringManager(), progressBarViewModel.GetFilteringManager());
+			window.FilesPanel.DataContext = filesListViewModel;
+			filesListManager = filesListViewModel.GetFilesListManager();
 
 			LoadSavedData();
-			UpdateFilteringStatus();
 			InitializeWindow();
 		}
 
@@ -77,7 +77,7 @@ namespace PackageChecker.WindowManagement
 		{
 			dataModel.PathValue = string.Empty;
 
-			ClearFilesList();
+			filesListManager.ClearList();
 
 			SetChooseMode();
 		}
@@ -91,11 +91,11 @@ namespace PackageChecker.WindowManagement
 
 			string path = files[0];
 
-			if (FilesManager.IsFolder(path))
+			if (FilesHelper.IsFolder(path))
 			{
 				SetFolderState(path);
 			}
-			else if (FilesManager.IsZipFile(path))
+			else if (FilesHelper.IsZipFile(path))
 			{
 				SetZipState(path);
 			}
@@ -105,38 +105,17 @@ namespace PackageChecker.WindowManagement
 			}
 		}
 
-		public void ApplyFilesConditions()
-		{
-			if (windowState == WindowState.Folder || windowState == WindowState.ZipFile)
-			{
-				filesManager.ApplyFilteting();
-			}
-			UpdateFilteringStatus();
-		}
-
 		public Task UpdateFilesList(WindowState transitionState)
 		{
-			Task updateTask = null;
-
 			switch (transitionState)
 			{
 				case WindowState.Folder:
-					updateTask = filesManager.ResetFileRecords(dataModel.PathValue, SearchType.Folder);
-					break;
+					return filesListManager.UpdateFileRecords(dataModel.PathValue, FileSearchType.Folder);
 				case WindowState.ZipFile:
-					updateTask = filesManager.ResetFileRecords(dataModel.PathValue, SearchType.Zip);
-					break;
+					return filesListManager.UpdateFileRecords(dataModel.PathValue, FileSearchType.Zip);
+				default:
+					throw new ArgumentException("Unknown UpdateFilesList argument.");
 			}
-
-			return updateTask == null ?
-				updateTask :
-				updateTask.ContinueWith(task => DispatcherInvoke(() => UpdateFilteringStatus()));
-		}
-
-		public void ClearFilesList()
-		{
-			filesManager.Clear();
-			UpdateFilteringStatus();
 		}
 
 		public void RegisterUncaughtExpectionsHandler(AppDomain domain)
@@ -154,7 +133,7 @@ namespace PackageChecker.WindowManagement
 		{
 			if (windowState == WindowState.Folder)
 			{
-				FilesManager.OpenFileExplorer(dataModel.PathValue, record.FilePath);
+				FilesHelper.OpenFileExplorer(dataModel.PathValue, record.FilePath);
 			}
 			else
 			{
@@ -165,12 +144,6 @@ namespace PackageChecker.WindowManagement
 		public void SaveDataOnClose()
 		{
 			Serializer.SaveObjectToFile(filteringViewModel.GetState(), savedFiltersPath);
-		}
-
-		private void UpdateFilteringStatus()
-		{
-			dataModel.CurrentFilteringStatus = string.Format(CultureInfo.InvariantCulture,
-				filteringStatusTemplate, filesManager.FilesShown, filesManager.FilesTotal - filesManager.FilesShown);
 		}
 
 		private void LoadSavedData()

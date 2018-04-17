@@ -1,4 +1,4 @@
-﻿using PackageChecker.FileSystem.DataModel;
+﻿using PackageChecker.Files;
 using PackageChecker.Filtering;
 using PackageChecker.WindowManagement;
 using System;
@@ -12,94 +12,79 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
-namespace PackageChecker.FileSystem
+namespace PackageChecker.Models
 {
-	public class FilesManager
+	internal class FilesListModel : BindableBase, IFilesListManager
 	{
-		private IProgressBarManager progressManager;
-		private IFilteringManager filteringManager;
-		private ObservableCollection<FileRecord> fileRecords;
-		private List<FileRecord> allFileRecords;
+		#region Private Properties
+		private string _currentFilteringStatus = string.Empty;
+		private ObservableCollection<FileRecord> _fileRecords = new ObservableCollection<FileRecord>();
 
-		public int FilesTotal
+		private IFilteringManager _filteringManager;
+		private IProgressBarManager _progressManager;
+		private List<FileRecord> _allFileRecords = new List<FileRecord>();
+
+		private const string _filteringStatusTemplate = "Files shown: {0}. Files hidden: {1}.";
+		#endregion //Private Properties
+
+		#region Binding Properties
+		internal readonly ReadOnlyObservableCollection<FileRecord> FileRecords;
+
+		public string CurrentFilteringStatus
 		{
-			get { return allFileRecords.Count; }
+			get
+			{
+				return _currentFilteringStatus;
+			}
+			set
+			{
+				_currentFilteringStatus = value;
+				OnPropertyChanged("CurrentFilteringStatus");
+			}
 		}
+		#endregion //Binding Properties
 
-		public int FilesShown
+		internal FilesListModel(IFilteringManager filteringManager, IProgressBarManager progressManager)
 		{
-			get { return fileRecords.Count; }
-		}
+			FileRecords = new ReadOnlyObservableCollection<FileRecord>(_fileRecords);
 
-		internal FilesManager(IFilteringManager filteringManager, IProgressBarManager progressManager, ObservableCollection<FileRecord> fileRecords)
-		{
-			this.filteringManager = filteringManager;
-			this.progressManager = progressManager;
-			this.fileRecords = fileRecords;
-			this.allFileRecords = new List<FileRecord>();
+			_filteringManager = filteringManager;
+			_progressManager = progressManager;
 
 			filteringManager.OnFilteringUpdate += () =>
 			{
 				ApplyFilteting();
 			};
+
+			UpdateFilteringStatus();
 		}
 
-		public static void OpenFileExplorer(string rootFolder, string relativePath)
-		{
-			string fullPath = Path.Combine(rootFolder, relativePath);
-			fullPath = ReplaseAltSeparators(fullPath);
-
-			if (!File.Exists(fullPath))
-			{
-				return;
-			}
-
-			const string explorerArgsFormat = "/select, \"{0}\"";
-			string argument = string.Format(CultureInfo.InvariantCulture, explorerArgsFormat, fullPath);
-
-			Process.Start("explorer.exe", argument);
-		}
-
-		public static bool IsFolder(string path)
-		{
-			FileAttributes attributes = File.GetAttributes(path);
-			return attributes.HasFlag(FileAttributes.Directory);
-		}
-
-		public static bool IsZipFile(string path)
-		{
-			if (IsFolder(path))
-			{
-				return false;
-			}
-
-			FileInfo info = new FileInfo(path);
-			return !string.IsNullOrEmpty(info.Extension) && info.Extension.Equals(".zip", StringComparison.OrdinalIgnoreCase);
-		}
-
-		public Task ResetFileRecords(string path, SearchType type)
+		#region Interface implementestion
+		public Task UpdateFileRecords(string path, FileSearchType type)
 		{
 			Task task = new Task(() => UpdateFileRecordsAsync(path, type));
 			task.Start();
 			return task;
 		}
 
-		public void Clear()
+		public void ClearList()
 		{
-			allFileRecords.Clear();
-			fileRecords.Clear();
+			_allFileRecords.Clear();
+			_fileRecords.Clear();
 			ApplyFilteting();
 		}
+		#endregion //Interface implementestion
 
-		public void ApplyFilteting()
+		#region Private Methods
+		private void ApplyFilteting()
 		{
-			fileRecords.Clear();
-			FilteringInfo info = filteringManager.GetFilteringInfo();
-			foreach (FileRecord record in allFileRecords)
+			_fileRecords.Clear();
+			FilteringInfo info = _filteringManager.GetFilteringInfo();
+			foreach (FileRecord record in _allFileRecords)
 			{
 				if (info.IsCorrectFileRecord(record))
 				{
-					fileRecords.Add(record);
+					_fileRecords.Add(record);
 				}
 
 				if (info.DoHighlightRecord(record))
@@ -111,17 +96,19 @@ namespace PackageChecker.FileSystem
 					record.DoHighlight = false;
 				}
 			}
+
+			UpdateFilteringStatus();
 		}
 
-		private void UpdateFileRecordsAsync(string path, SearchType type)
+		private void UpdateFileRecordsAsync(string path, FileSearchType type)
 		{
 			switch (type)
 			{
-				case SearchType.Folder:
-					allFileRecords = GetAllFolderRecords(path);
+				case FileSearchType.Folder:
+					_allFileRecords = GetAllFolderRecords(path);
 					break;
-				case SearchType.Zip:
-					allFileRecords = GetAllZipRecords(path);
+				case FileSearchType.Zip:
+					_allFileRecords = GetAllZipRecords(path);
 					break;
 				default:
 					throw new ArgumentException(nameof(type));
@@ -170,7 +157,7 @@ namespace PackageChecker.FileSystem
 					if (entry.FullName.EndsWith(".dll", StringComparison.OrdinalIgnoreCase) ||
 						entry.FullName.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
 					{
-						string destinationPath = Path.Combine(dirPath, ReplaseAltSeparators(entry.FullName));
+						string destinationPath = Path.Combine(dirPath, FilesHelper.ReplaseAltSeparators(entry.FullName));
 
 						FileInfo destinationPathFileInfo = new FileInfo(destinationPath);
 						if (!destinationPathFileInfo.Directory.Exists)
@@ -209,7 +196,7 @@ namespace PackageChecker.FileSystem
 
 				allFiles.Add(new FileRecord()
 				{
-					FilePath = GetRelativePath(filePath, dirPath),
+					FilePath = FilesHelper.GetRelativePath(filePath, dirPath),
 					FileVersion = fileVersionInfo.FileVersion,
 					ProductVersion = fileVersionInfo.ProductVersion,
 					Signature = fileCertificate != null ? fileCertificate.Subject : string.Empty,
@@ -245,40 +232,34 @@ namespace PackageChecker.FileSystem
 			return files;
 		}
 
-		private string GetRelativePath(string fullPath, string rootPath)
+		private void UpdateFilteringStatus()
 		{
-			if (!rootPath.EndsWith(Path.DirectorySeparatorChar.ToString()))
-			{
-				rootPath += Path.DirectorySeparatorChar;
-			}
-			Uri fileUri = new Uri(fullPath);
-			Uri referenceUri = new Uri(rootPath);
-			return referenceUri.MakeRelativeUri(fileUri).ToString().Replace("%20", " ");
-		}
+			int filesShown = _fileRecords.Count;
+			int filesTotal = _allFileRecords.Count;
+			int filesHidden = filesTotal - filesShown;
 
-		private static string ReplaseAltSeparators(string path)
-		{
-			return path.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
+			CurrentFilteringStatus = string.Format(CultureInfo.InvariantCulture, _filteringStatusTemplate, filesShown, filesHidden);
 		}
 
 		private void UpdateProgress(int progress)
 		{
-			DispatcherInvoke(() => progressManager.Progress = progress);
+			DispatcherInvoke(() => _progressManager.Progress = progress);
 		}
 
 		private void UpdateProgressText(string progressText)
 		{
-			DispatcherInvoke(() => progressManager.ProgressText = progressText);
+			DispatcherInvoke(() => _progressManager.ProgressText = progressText);
 		}
 
 		private void IsProgressIndeterminate(bool isIndeterminate)
 		{
-			DispatcherInvoke(() => progressManager.IsIndeterminate = isIndeterminate);
+			DispatcherInvoke(() => _progressManager.IsIndeterminate = isIndeterminate);
 		}
 
 		private void DispatcherInvoke(Action action)
 		{
 			App.Current.Dispatcher.Invoke(action);
 		}
+		#endregion //Private Methods
 	}
 }
