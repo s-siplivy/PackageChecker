@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
@@ -25,7 +26,7 @@ namespace PackageChecker.Models
 		private IProgressBarManager _progressManager;
 		private List<FileRecord> _allFileRecords = new List<FileRecord>();
 
-		private const string _filteringStatusTemplate = "Files shown: {0}. Files hidden: {1}.";
+		private const string _filteringStatusTemplate = "Files shown: {0}. Files hidden: {1}. Files highlighted: {2}.";
 		#endregion //Private Properties
 
 		#region Binding Properties
@@ -238,8 +239,9 @@ namespace PackageChecker.Models
 			int filesShown = _fileRecords.Count;
 			int filesTotal = _allFileRecords.Count;
 			int filesHidden = filesTotal - filesShown;
+			int filesHighlighted = _fileRecords.Count(fr => fr.DoHighlight);
 
-			CurrentFilteringStatus = string.Format(CultureInfo.InvariantCulture, _filteringStatusTemplate, filesShown, filesHidden);
+			CurrentFilteringStatus = string.Format(CultureInfo.InvariantCulture, _filteringStatusTemplate, filesShown, filesHidden, filesHighlighted);
 		}
 
 		private void UpdateProgress(int progress)
