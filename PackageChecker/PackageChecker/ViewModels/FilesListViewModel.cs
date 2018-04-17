@@ -1,4 +1,5 @@
-﻿using PackageChecker.Files;
+﻿using PackageChecker.BindingBase;
+using PackageChecker.Files;
 using PackageChecker.Filtering;
 using PackageChecker.Models;
 using PackageChecker.WindowManagement;
@@ -8,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace PackageChecker.ViewModels
 {

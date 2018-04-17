@@ -1,5 +1,6 @@
 ﻿using PackageChecker.WindowManagement;
 using System;
+using System.Windows;
 
 namespace PackageChecker.Models
 {
@@ -9,6 +10,7 @@ namespace PackageChecker.Models
 		private bool _isProgressBarIndeterminate = false;
 		private int _progressBarCurrent = 0;
 		private string _progressText = string.Empty;
+		private Visibility _visibility = Visibility.Collapsed;
 		#endregion //Private Properties
 
 		#region Binding Properties
@@ -48,6 +50,19 @@ namespace PackageChecker.Models
 			{
 				_progressText = value;
 				OnPropertyChanged("ProgressText");
+			}
+		}
+
+		public Visibility CurrentVisibility
+		{
+			get
+			{
+				return _visibility;
+			}
+			set
+			{
+				_visibility = value;
+				OnPropertyChanged("CurrentVisibility");
 			}
 		}
 		#endregion //Binding Properties
@@ -97,6 +112,11 @@ namespace PackageChecker.Models
 
 				ProgressText = value;
 			}
+		}
+
+		void IProgressBarManager.SetVisibility(Visibility visibility)
+		{
+			CurrentVisibility = visibility;
 		}
 		#endregion //Interface implementestion
 	}

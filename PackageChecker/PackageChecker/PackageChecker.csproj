@@ -71,13 +71,14 @@
     <Compile Include="Filtering\FilteringCondition.cs" />
     <Compile Include="Filtering\FilteringInfo.cs" />
     <Compile Include="Models\ProgressBarModel.cs" />
+    <Compile Include="Models\WindowModel.cs" />
     <Compile Include="ViewModels\FilesListViewModel.cs" />
     <Compile Include="ViewModels\FilteringViewModel.cs" />
     <Compile Include="ViewModels\ProgressBarViewModel.cs" />
+    <Compile Include="ViewModels\WindowViewModel.cs" />
     <Compile Include="WindowManagement\IFilesListManager.cs" />
     <Compile Include="WindowManagement\IProgressBarManager.cs" />
-    <Compile Include="WindowManagement\DataModel\WindowDataModel.cs" />
-    <Compile Include="WindowManagement\DataModel\WindowState.cs" />
+    <Compile Include="WindowManagement\MainWindowState.cs" />
     <Compile Include="WindowManagement\WindowHelper.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

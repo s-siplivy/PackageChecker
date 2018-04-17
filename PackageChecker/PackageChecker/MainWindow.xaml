@@ -12,19 +12,19 @@
         Icon="PackageIcon.ico"
         Title="Package Checker (0.2 Beta)" Height="750" Width="950" MinHeight="350" MinWidth="450">
 	<DockPanel Margin="10">
-		<DockPanel Name="PathPanel" DockPanel.Dock="Top">
-			<Button Name="SelectionCancel" Margin="5" Width="30" Height="30" DockPanel.Dock="Right" Click="SelectionCancel_Click">✖</Button>
+		<DockPanel Name="PathPanel" DockPanel.Dock="Top" Visibility="{Binding PathPanelVisibility}">
+			<Button Name="SelectionCancel" Margin="5" Width="30" Height="30" DockPanel.Dock="Right" Command="{Binding SetEmptyState}">✖</Button>
 			<TextBox Name="PathTextBox" IsReadOnly="True" Margin="5" MaxLines="1" Text="{Binding PathValue}"></TextBox>
 		</DockPanel>
-		<DockPanel Name="ProgressPanel" DockPanel.Dock="Top">
+		<DockPanel Name="ProgressPanel" DockPanel.Dock="Top" Visibility="{Binding CurrentVisibility}">
 			<Border BorderBrush="{x:Null}" Margin="5" Height="30" Width="100" DockPanel.Dock="Right">
 				<TextBlock Name="ProgressText"  Text="{Binding ProgressText, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Center" />
 			</Border>
 			<ProgressBar Name="ProgressBar" Margin="5" Height="30" Value="{Binding Path=ProgressBarCurrent}" IsIndeterminate="{Binding Path=IsProgressBarIndeterminate}" />
 		</DockPanel>
-		<StackPanel Name="ChoosePanel" Orientation="Horizontal" HorizontalAlignment="Center" DockPanel.Dock="Top">
-			<Button Name="ArchiveChoose" Margin="5" Width="150" Height="30" Click="ArchiveChoose_Click">Choose archive</Button>
-			<Button Name="FolderChoose" Margin="5" Width="150" Height="30" Click="FolderChoose_Click">Choose folder</Button>
+		<StackPanel Name="ChoosePanel" Orientation="Horizontal" HorizontalAlignment="Center" DockPanel.Dock="Top" Visibility="{Binding ChoosePanelVisibility}">
+			<Button Name="ArchiveChoose" Margin="5" Width="150" Height="30" Command="{Binding SetZipState}">Choose archive</Button>
+			<Button Name="FolderChoose" Margin="5" Width="150" Height="30" Command="{Binding SetFolderState}">Choose folder</Button>
 		</StackPanel>
 		<Border BorderBrush="Gray" BorderThickness="1" Margin="5" Padding="5" DockPanel.Dock="Top">
 			<Expander Header="Filtering expressions">

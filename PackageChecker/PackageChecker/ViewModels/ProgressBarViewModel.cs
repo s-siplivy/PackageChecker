@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace PackageChecker.ViewModels
 {
@@ -20,8 +21,9 @@ namespace PackageChecker.ViewModels
 		public bool IsProgressBarIndeterminate { get { return _model.IsProgressBarIndeterminate; } set { _model.IsProgressBarIndeterminate = value; } }
 		public int ProgressBarCurrent { get { return _model.ProgressBarCurrent; } set { _model.ProgressBarCurrent = value; } }
 		public string ProgressText => _model.ProgressText;
+		public Visibility CurrentVisibility => _model.CurrentVisibility;
 
-		internal IProgressBarManager GetFilteringManager()
+		internal IProgressBarManager GetProgressBarManager()
 		{
 			return _model;
 		}
