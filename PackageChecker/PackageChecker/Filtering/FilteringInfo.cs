@@ -2,17 +2,17 @@
 
 namespace PackageChecker.Filtering
 {
-	public class FilteringInfo
+	internal class FilteringInfo
 	{
 		internal const string notSymbol = "!";
 		internal const string specialSymbol = "*";
 
-		public FilteringCondition ProductVersionCondition { get; private set; }
-		public FilteringCondition FileVersionCondition { get; private set; }
-		public FilteringCondition FilePathCondition { get; private set; }
-		public FilteringCondition SignatureCondition { get; private set; }
+		internal FilteringCondition ProductVersionCondition { get; private set; }
+		internal FilteringCondition FileVersionCondition { get; private set; }
+		internal FilteringCondition FilePathCondition { get; private set; }
+		internal FilteringCondition SignatureCondition { get; private set; }
 
-		public FilteringInfo()
+		internal FilteringInfo()
 		{
 			ProductVersionCondition = new FilteringCondition();
 			FileVersionCondition = new FilteringCondition();
@@ -20,7 +20,7 @@ namespace PackageChecker.Filtering
 			SignatureCondition = new FilteringCondition();
 		}
 
-		public bool IsCorrectFileRecord(FileRecord record)
+		internal bool IsCorrectFileRecord(FileRecord record)
 		{
 			return IsValuePassCondition(ProductVersionCondition, record.ProductVersion) &&
 				IsValuePassCondition(FileVersionCondition, record.FileVersion) &&
@@ -28,7 +28,7 @@ namespace PackageChecker.Filtering
 				IsValuePassCondition(SignatureCondition, record.Signature);
 		}
 
-		public bool DoHighlightRecord(FileRecord record)
+		internal bool DoHighlightRecord(FileRecord record)
 		{
 			return IsHighlightCondition(ProductVersionCondition, record.ProductVersion) ||
 				IsHighlightCondition(FileVersionCondition, record.FileVersion) ||

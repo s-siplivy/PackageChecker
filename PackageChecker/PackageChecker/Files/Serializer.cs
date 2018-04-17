@@ -3,9 +3,9 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace PackageChecker.Files
 {
-	public static class Serializer
+	internal static class Serializer
 	{
-		public static void SaveObjectToFile(object obj, string fileName)
+		internal static void SaveObjectToFile(object obj, string fileName)
 		{
 			if (File.Exists(fileName))
 			{
@@ -19,7 +19,7 @@ namespace PackageChecker.Files
 			}
 		}
 
-		public static object LoadObjectFromFile(string fileName)
+		internal static object LoadObjectFromFile(string fileName)
 		{
 			if (!File.Exists(fileName))
 			{

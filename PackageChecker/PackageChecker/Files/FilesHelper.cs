@@ -6,9 +6,9 @@ using System.Windows.Forms;
 
 namespace PackageChecker.Files
 {
-	public static class FilesHelper
+	internal static class FilesHelper
 	{
-		public static string PickZipDialog()
+		internal static string PickZipDialog()
 		{
 			using (var fileDialog = new OpenFileDialog())
 			{
@@ -26,7 +26,7 @@ namespace PackageChecker.Files
 			}
 		}
 
-		public static string PickFolderDialog()
+		internal static string PickFolderDialog()
 		{
 			using (var fileDialog = new FolderBrowserDialog())
 			{
@@ -41,13 +41,13 @@ namespace PackageChecker.Files
 			}
 		}
 
-		public static bool IsFolder(string path)
+		internal static bool IsFolder(string path)
 		{
 			FileAttributes attributes = File.GetAttributes(path);
 			return attributes.HasFlag(FileAttributes.Directory);
 		}
 
-		public static bool IsZipFile(string path)
+		internal static bool IsZipFile(string path)
 		{
 			if (IsFolder(path))
 			{
@@ -58,7 +58,7 @@ namespace PackageChecker.Files
 			return !string.IsNullOrEmpty(info.Extension) && info.Extension.Equals(".zip", StringComparison.OrdinalIgnoreCase);
 		}
 
-		public static void OpenFileExplorer(string rootFolder, string relativePath)
+		internal static void OpenFileExplorer(string rootFolder, string relativePath)
 		{
 			string fullPath = Path.Combine(rootFolder, relativePath);
 			fullPath = ReplaseAltSeparators(fullPath);
@@ -74,7 +74,7 @@ namespace PackageChecker.Files
 			Process.Start("explorer.exe", argument);
 		}
 
-		public static string GetRelativePath(string fullPath, string rootPath)
+		internal static string GetRelativePath(string fullPath, string rootPath)
 		{
 			if (!rootPath.EndsWith(Path.DirectorySeparatorChar.ToString()))
 			{
@@ -85,7 +85,7 @@ namespace PackageChecker.Files
 			return referenceUri.MakeRelativeUri(fileUri).ToString().Replace("%20", " ");
 		}
 
-		public static string ReplaseAltSeparators(string path)
+		internal static string ReplaseAltSeparators(string path)
 		{
 			return path.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
 		}

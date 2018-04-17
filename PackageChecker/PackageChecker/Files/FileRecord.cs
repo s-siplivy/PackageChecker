@@ -1,15 +1,15 @@
 ﻿namespace PackageChecker.Files
 {
-	public class FileRecord
+	internal class FileRecord
 	{
-		public string Signature { get; set; }
+		internal string Signature { get; set; }
 
-		public string FilePath { get; set; }
+		internal string FilePath { get; set; }
 
-		public string FileVersion { get; set; }
+		internal string FileVersion { get; set; }
 
-		public string ProductVersion { get; set; }
+		internal string ProductVersion { get; set; }
 
-		public bool DoHighlight { get; set; }
+		internal bool DoHighlight { get; set; }
 	}
 }

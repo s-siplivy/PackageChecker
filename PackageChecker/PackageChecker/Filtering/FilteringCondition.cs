@@ -2,12 +2,12 @@
 
 namespace PackageChecker.Filtering
 {
-	public class FilteringCondition
+	internal class FilteringCondition
 	{
-		public List<string> EntityInclude { get; private set; }
-		public List<string> EntityHighlignt { get; private set; }
+		internal List<string> EntityInclude { get; private set; }
+		internal List<string> EntityHighlignt { get; private set; }
 
-		public FilteringCondition()
+		internal FilteringCondition()
 		{
 			EntityInclude = new List<string>();
 			EntityHighlignt = new List<string>();

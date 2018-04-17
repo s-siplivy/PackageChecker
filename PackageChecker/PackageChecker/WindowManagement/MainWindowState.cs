@@ -1,6 +1,6 @@
 ﻿namespace PackageChecker.WindowManagement
 {
-	public enum MainWindowState
+	internal enum MainWindowState
 	{
 		None,
 		ProgressPanel,

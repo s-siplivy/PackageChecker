@@ -1,6 +1,6 @@
 ﻿namespace PackageChecker.Files
 {
-	public enum FileSearchType
+	internal enum FileSearchType
 	{
 		Folder,
 		Zip
