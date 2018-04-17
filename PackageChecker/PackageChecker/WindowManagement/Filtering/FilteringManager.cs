@@ -21,10 +21,9 @@ namespace PackageChecker.WindowManagement.Filtering
 			"\nThe operator «{1}» inverts boolean value of operators.\n" +
 			"It is supported only in the the beginning of the value string.\n" +
 			"\nThe operator «{2}» represents any number of symbols.\n" +
-			"It is supported in the the beginning and in the end\n" +
-			"of the value string.\n" +
-			"\nIn case the value string isn't provided it is\n" +
-			"considered as an empty string value.\n";
+			"It is supported in the the beginning and in the end of the value string.\n" +
+			"\nIn case the value string isn't provided it is considered as an empty\n" +
+			"string value.\n";
 
 		protected const string hintMessage = "Format is «{0}». For more information, see help.";
 
