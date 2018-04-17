@@ -1,4 +1,5 @@
-﻿using PackageChecker.WindowManagement;
+﻿using PackageChecker.BindingBase;
+using PackageChecker.WindowManagement;
 using System;
 using System.Windows;
 

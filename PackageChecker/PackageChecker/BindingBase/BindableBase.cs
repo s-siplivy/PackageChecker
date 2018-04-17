@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PackageChecker
+namespace PackageChecker.BindingBase
 {
 	internal abstract class BindableBase : INotifyPropertyChanged
 	{

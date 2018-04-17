@@ -1,4 +1,5 @@
-﻿using PackageChecker.Filtering;
+﻿using PackageChecker.BindingBase;
+using PackageChecker.Filtering;
 using PackageChecker.WindowManagement;
 using System;
 using System.Collections.ObjectModel;

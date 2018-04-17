@@ -1,4 +1,5 @@
-﻿using PackageChecker.Files;
+﻿using PackageChecker.BindingBase;
+using PackageChecker.Files;
 using PackageChecker.Filtering;
 using PackageChecker.WindowManagement;
 using System;

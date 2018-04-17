@@ -1,4 +1,5 @@
-﻿using PackageChecker.Models;
+﻿using PackageChecker.BindingBase;
+using PackageChecker.Models;
 using PackageChecker.WindowManagement;
 using System;
 using System.Collections.Generic;
