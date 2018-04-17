@@ -37,6 +37,11 @@ namespace PackageChecker.FileSystem
 			this.progressController = progressController;
 			this.fileRecords = fileRecords;
 			this.allFileRecords = new List<FileRecord>();
+
+			filteringManager.OnFilteringUpdate += () =>
+			{
+				ApplyFilteting();
+			};
 		}
 
 		public static void OpenFileExplorer(string rootFolder, string relativePath)
