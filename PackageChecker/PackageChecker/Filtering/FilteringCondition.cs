@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace PackageChecker.WindowManagement.Filtering
+namespace PackageChecker.Filtering
 {
 	public class FilteringCondition
 	{

@@ -1,6 +1,6 @@
 ﻿using PackageChecker.FileSystem.DataModel;
+using PackageChecker.Filtering;
 using PackageChecker.WindowManagement;
-using PackageChecker.WindowManagement.Filtering;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,7 +17,7 @@ namespace PackageChecker.FileSystem
 	public class FilesManager
 	{
 		private ProgressBarController progressController;
-		private FilteringManager filteringManager;
+		private IFilteringManager filteringManager;
 		private ObservableCollection<FileRecord> fileRecords;
 		private List<FileRecord> allFileRecords;
 
@@ -31,7 +31,7 @@ namespace PackageChecker.FileSystem
 			get { return fileRecords.Count; }
 		}
 
-		public FilesManager(FilteringManager filteringManager, ProgressBarController progressController, ObservableCollection<FileRecord> fileRecords)
+		internal FilesManager(IFilteringManager filteringManager, ProgressBarController progressController, ObservableCollection<FileRecord> fileRecords)
 		{
 			this.filteringManager = filteringManager;
 			this.progressController = progressController;

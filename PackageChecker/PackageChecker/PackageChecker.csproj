@@ -60,16 +60,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BindingBase\BindCommand.cs" />
     <Compile Include="FileSystem\DataModel\FileRecord.cs" />
     <Compile Include="FileSystem\FilesManager.cs" />
     <Compile Include="FileSystem\DataModel\SearchType.cs" />
     <Compile Include="FileSystem\Serializer.cs" />
-    <Compile Include="WindowManagement\Filtering\FilteringCondition.cs" />
-    <Compile Include="WindowManagement\Filtering\FilteringInfo.cs" />
-    <Compile Include="WindowManagement\Filtering\FilteringManager.cs" />
+    <Compile Include="BindingBase\BindableBase.cs" />
+    <Compile Include="Filtering\IFilteringManager.cs" />
+    <Compile Include="Models\FilteringModel.cs" />
+    <Compile Include="Filtering\FilteringCondition.cs" />
+    <Compile Include="Filtering\FilteringInfo.cs" />
+    <Compile Include="ViewModels\FilteringViewModel.cs" />
     <Compile Include="WindowManagement\ProgressBarController.cs" />
     <Compile Include="WindowManagement\DataModel\WindowDataModel.cs" />
     <Compile Include="WindowManagement\DataModel\WindowState.cs" />
+    <Compile Include="WindowManagement\WindowHelper.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -115,6 +120,7 @@
   <ItemGroup>
     <Resource Include="PackageIcon.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

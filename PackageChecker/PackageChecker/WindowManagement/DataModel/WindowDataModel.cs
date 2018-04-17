@@ -10,11 +10,8 @@ namespace PackageChecker.WindowManagement.DataModel
 		private int progressBarCurrent;
 		private string progressText;
 		private string pathValue;
-		private string currentFilteringExpression;
-		private string currentFilteringExpressionHint;
 		private string currentFilteringStatus;
 		private ObservableCollection<FileRecord> fileRecords;
-		private ObservableCollection<string> filteringExpressions;
 
 		public bool IsProgressBarIndeterminate
 		{
@@ -79,39 +76,6 @@ namespace PackageChecker.WindowManagement.DataModel
 				}
 			}
 		}
-
-		public string CurrentFilteringExpression
-		{
-			get
-			{
-				return currentFilteringExpression;
-			}
-			set
-			{
-				if (currentFilteringExpression != value)
-				{
-					currentFilteringExpression = value;
-					PropertyChanged(this, new PropertyChangedEventArgs("CurrentFilteringExpression"));
-				}
-			}
-		}
-
-		public string CurrentFilteringExpressionHint
-		{
-			get
-			{
-				return currentFilteringExpressionHint;
-			}
-			set
-			{
-				if (currentFilteringExpressionHint != value)
-				{
-					currentFilteringExpressionHint = value;
-					PropertyChanged(this, new PropertyChangedEventArgs("CurrentFilteringExpressionHint"));
-				}
-			}
-		}
-
 		public string CurrentFilteringStatus
 		{
 			get
@@ -124,22 +88,6 @@ namespace PackageChecker.WindowManagement.DataModel
 				{
 					currentFilteringStatus = value;
 					PropertyChanged(this, new PropertyChangedEventArgs("CurrentFilteringStatus"));
-				}
-			}
-		}
-
-		public ObservableCollection<string> FilteringExpressions
-		{
-			get
-			{
-				return filteringExpressions;
-			}
-			set
-			{
-				if (filteringExpressions != value)
-				{
-					filteringExpressions = value;
-					PropertyChanged(this, new PropertyChangedEventArgs("FilteringExpressions"));
 				}
 			}
 		}
@@ -168,9 +116,7 @@ namespace PackageChecker.WindowManagement.DataModel
 			progressBarCurrent = 0;
 			progressText = string.Empty;
 			pathValue = string.Empty;
-			currentFilteringExpression = string.Empty;
 			fileRecords = new ObservableCollection<FileRecord>();
-			filteringExpressions = new ObservableCollection<string>();
 
 			PropertyChanged += (s, e) => { };
 		}

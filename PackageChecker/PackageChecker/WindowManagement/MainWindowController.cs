@@ -1,7 +1,8 @@
 ﻿using PackageChecker.FileSystem;
 using PackageChecker.FileSystem.DataModel;
+using PackageChecker.Models;
+using PackageChecker.ViewModels;
 using PackageChecker.WindowManagement.DataModel;
-using PackageChecker.WindowManagement.Filtering;
 using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -16,7 +17,7 @@ namespace PackageChecker.WindowManagement
 		protected const string filteringStatusTemplate = "Files shown: {0}. Files hidden: {1}.";
 
 		public WindowState windowState { get; private set; }
-		protected FilteringManager filteringManager;
+		private FilteringViewModel filteringViewModel;
 		protected FilesManager filesManager;
 		protected MainWindow window;
 		protected WindowDataModel dataModel;
@@ -25,15 +26,14 @@ namespace PackageChecker.WindowManagement
 		{
 			this.window = window;
 			this.dataModel = dataModel;
+			ProgressBarController progressController = new ProgressBarController(dataModel);
+
+			filteringViewModel = new FilteringViewModel();
+			window.FilterPanel.DataContext = filteringViewModel;
+
+			filesManager = new FilesManager(filteringViewModel.GetFilteringManager(), progressController, dataModel.FileRecords);
 
 			LoadSavedData();
-
-			ProgressBarController progressController = new ProgressBarController(dataModel);
-			filteringManager = new FilteringManager(dataModel.FilteringExpressions);
-			filesManager = new FilesManager(filteringManager, progressController, dataModel.FileRecords);
-
-			this.dataModel.CurrentFilteringExpressionHint = filteringManager.GetExpressionPatternHint();
-
 			UpdateFilteringStatus();
 			InitializeWindow();
 		}
@@ -102,54 +102,6 @@ namespace PackageChecker.WindowManagement
 			}
 		}
 
-		public void AddFilteringExpression()
-		{
-			try
-			{
-				filteringManager.AddExpression(dataModel.CurrentFilteringExpression);
-				dataModel.CurrentFilteringExpression = string.Empty;
-				ApplyFilesConditions();
-			}
-			catch (ArgumentException e)
-			{
-				ShowMessage(e.Message, "Error");
-			}
-		}
-
-		public void EditFilteringExpression()
-		{
-			try
-			{
-				int index = window.ListFilterExpressions.SelectedIndex;
-				dataModel.CurrentFilteringExpression = filteringManager.EditExpression(index);
-				ApplyFilesConditions();
-			}
-			catch (ArgumentException e)
-			{
-				ShowMessage(e.Message, "Error");
-			}
-		}
-
-		public void RemoveFilteringExpression()
-		{
-			try
-			{
-				filteringManager.RemoveExpression(window.ListFilterExpressions.SelectedIndex);
-				ApplyFilesConditions();
-			}
-			catch (ArgumentException e)
-			{
-				ShowMessage(e.Message, "Error");
-			}
-		}
-
-		public void FilteringExpressionInfo()
-		{
-			string helpMessage = filteringManager.GetHelpMessage();
-
-			ShowMessage(helpMessage, "Help");
-		}
-
 		public void ApplyFilesConditions()
 		{
 			if (windowState == WindowState.Folder || windowState == WindowState.ZipFile)
@@ -209,7 +161,7 @@ namespace PackageChecker.WindowManagement
 
 		public void SaveDataOnClose()
 		{
-			Serializer.SaveObjectToFile(dataModel.FilteringExpressions, savedFiltersPath);
+			Serializer.SaveObjectToFile(filteringViewModel.GetState(), savedFiltersPath);
 		}
 
 		private void UpdateFilteringStatus()
@@ -220,11 +172,11 @@ namespace PackageChecker.WindowManagement
 
 		private void LoadSavedData()
 		{
-			ObservableCollection<string> savedFilters = null;
+			FilteringModel.FilteringState savedFilters = null;
 
 			try
 			{
-				savedFilters = Serializer.LoadObjectFromFile(savedFiltersPath) as ObservableCollection<string>;
+				savedFilters = Serializer.LoadObjectFromFile(savedFiltersPath) as FilteringModel.FilteringState;
 			}
 			catch (SerializationException)
 			{
@@ -233,7 +185,7 @@ namespace PackageChecker.WindowManagement
 
 			if (savedFilters != null)
 			{
-				dataModel.FilteringExpressions = savedFilters;
+				filteringViewModel.SetState(savedFilters);
 			}
 		}
 

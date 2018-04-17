@@ -1,6 +1,6 @@
 ﻿using PackageChecker.FileSystem.DataModel;
 
-namespace PackageChecker.WindowManagement.Filtering
+namespace PackageChecker.Filtering
 {
 	public class FilteringInfo
 	{

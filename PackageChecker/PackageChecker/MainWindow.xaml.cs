@@ -57,36 +57,6 @@ namespace PackageChecker
 			controller.SetEmptyState();
 		}
 
-		private void FilterExpression_KeyDown(object sender, KeyEventArgs e)
-		{
-			if (e.Key == Key.Enter)
-			{
-				TextBox box = (TextBox)sender;
-				dataModel.CurrentFilteringExpression = box.Text;
-				controller.AddFilteringExpression();
-			}
-		}
-
-		private void AddFilter_Click(object sender, RoutedEventArgs e)
-		{
-			controller.AddFilteringExpression();
-		}
-
-		private void EditFilter_Click(object sender, RoutedEventArgs e)
-		{
-			controller.EditFilteringExpression();
-		}
-
-		private void RemoveFilter_Click(object sender, RoutedEventArgs e)
-		{
-			controller.RemoveFilteringExpression();
-		}
-
-		private void Info_Click(object sender, RoutedEventArgs e)
-		{
-			controller.FilteringExpressionInfo();
-		}
-
 		private void FilesList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
 		{
 			ListView listView = (ListView)sender;
