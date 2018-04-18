@@ -70,7 +70,7 @@
 		</Border>
 		<DockPanel DockPanel.Dock="Top" Name="FilesPanel">
 			<TextBlock Name="InfoText" Margin="5" VerticalAlignment="Center" Text="{Binding Path=CurrentFilteringStatus}" DockPanel.Dock="Top"/>
-			<DataGrid Name="FilesList" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" ItemsSource="{Binding FileRecords}" AutoGenerateColumns="False" IsReadOnly="True" >
+			<DataGrid Name="FilesList" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" ItemsSource="{Binding FileRecords}" AutoGenerateColumns="False" IsReadOnly="True" GridLinesVisibility="None">
 				<DataGrid.ItemContainerStyle>
 					<Style TargetType="{x:Type DataGridRow}">
 						<Style.Triggers>
