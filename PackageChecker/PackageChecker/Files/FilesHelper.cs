@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Windows.Forms;
+using Microsoft.WindowsAPICodePack.Dialogs;
 
 namespace PackageChecker.Files
 {
@@ -10,14 +10,14 @@ namespace PackageChecker.Files
 	{
 		internal static string PickZipDialog()
 		{
-			using (var fileDialog = new OpenFileDialog())
+			using (CommonOpenFileDialog fileDialog = new CommonOpenFileDialog())
 			{
-				fileDialog.Filter = "Zip Archive|*.zip";
-				fileDialog.CheckPathExists = true;
+				fileDialog.Filters.Add(new CommonFileDialogFilter("Zip Archive", ".zip"));
+				fileDialog.EnsurePathExists = true;
 				fileDialog.Multiselect = false;
-				DialogResult result = fileDialog.ShowDialog();
 
-				if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fileDialog.FileName))
+				CommonFileDialogResult result = fileDialog.ShowDialog();
+				if (result == CommonFileDialogResult.Ok && !string.IsNullOrWhiteSpace(fileDialog.FileName))
 				{
 					return fileDialog.FileName;
 				}
@@ -28,13 +28,16 @@ namespace PackageChecker.Files
 
 		internal static string PickFolderDialog()
 		{
-			using (var fileDialog = new FolderBrowserDialog())
+			using (CommonOpenFileDialog fileDialog = new CommonOpenFileDialog())
 			{
-				DialogResult result = fileDialog.ShowDialog();
+				fileDialog.IsFolderPicker = true;
+				fileDialog.EnsurePathExists = true;
+				fileDialog.Multiselect = false;
 
-				if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fileDialog.SelectedPath))
+				CommonFileDialogResult result = fileDialog.ShowDialog();
+				if (result == CommonFileDialogResult.Ok && !string.IsNullOrWhiteSpace(fileDialog.FileName))
 				{
-					return fileDialog.SelectedPath;
+					return fileDialog.FileName;
 				}
 
 				return string.Empty;
