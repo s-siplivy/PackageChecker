@@ -37,7 +37,9 @@ namespace PackageChecker
 			this.Drop += (s, e) => ProcessWindowDrop(e, windowViewModel);
 			DataContext = windowViewModel;
 
-			FilesList.MouseDoubleClick += (s, e) => FilesList_MouseDoubleClick(s, windowViewModel.WindowState, windowViewModel.PathValue);
+			FilesList.ItemContainerStyle.Setters.Add(new EventSetter(
+				DataGridRow.MouseDoubleClickEvent,
+				new MouseButtonEventHandler((s, e) => FilesList_MouseDoubleClick(s, windowViewModel.WindowState, windowViewModel.PathValue))));
 
 			RegisterUncaughtExpectionsHandler(AppDomain.CurrentDomain);
 		}
@@ -53,8 +55,8 @@ namespace PackageChecker
 		{
 			// Workaround for MVVM double click functionality
 			// TODO: Imlement MVVM double click approach
-			DataGrid listView = (DataGrid)sender;
-			FileRecord selectedRecord = (FileRecord)listView.SelectedItem;
+			DataGridRow gridRow = (DataGridRow)sender;
+			FileRecord selectedRecord = (FileRecord)gridRow.Item;
 
 			if (selectedRecord != null)
 			{
