@@ -53,7 +53,7 @@ namespace PackageChecker
 		{
 			// Workaround for MVVM double click functionality
 			// TODO: Imlement MVVM double click approach
-			ListView listView = (ListView)sender;
+			DataGrid listView = (DataGrid)sender;
 			FileRecord selectedRecord = (FileRecord)listView.SelectedItem;
 
 			if (selectedRecord != null)

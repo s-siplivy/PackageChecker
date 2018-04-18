@@ -70,32 +70,23 @@
 		</Border>
 		<DockPanel DockPanel.Dock="Top" Name="FilesPanel">
 			<TextBlock Name="InfoText" Margin="5" VerticalAlignment="Center" Text="{Binding Path=CurrentFilteringStatus}" DockPanel.Dock="Top"/>
-			<ListView Name="FilesList" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" ItemsSource="{Binding FileRecords}">
-				<ListView.ItemContainerStyle>
-					<Style TargetType="{x:Type ListViewItem}">
+			<DataGrid Name="FilesList" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" ItemsSource="{Binding FileRecords}" AutoGenerateColumns="False" IsReadOnly="True" >
+				<DataGrid.ItemContainerStyle>
+					<Style TargetType="{x:Type DataGridRow}">
 						<Style.Triggers>
-							<Trigger Property="IsSelected" Value="True">
-								<Setter Property="Background" Value="{x:Null}" />
-								<Setter Property="BorderBrush" Value="{x:Null}" />
-							</Trigger>
 							<DataTrigger Binding="{Binding DoHighlight}" Value="true" >
 								<Setter Property="Background" Value="Gainsboro" />
 							</DataTrigger>
-							<Trigger Property="IsMouseOver" Value="True">
-								<Setter Property="Background" Value="LightSkyBlue" />
-							</Trigger>
 						</Style.Triggers>
 					</Style>
-				</ListView.ItemContainerStyle>
-				<ListView.View>
-					<GridView>
-						<GridViewColumn Header="Signature" Width="100" DisplayMemberBinding="{Binding Signature}" />
-						<GridViewColumn Header="Product Version" Width="220" DisplayMemberBinding="{Binding ProductVersion}" />
-						<GridViewColumn Header="File Version" Width="140" DisplayMemberBinding="{Binding FileVersion}" />
-						<GridViewColumn Header="File Path" Width="420" DisplayMemberBinding="{Binding FilePath}" />
-					</GridView>
-				</ListView.View>
-			</ListView>
+				</DataGrid.ItemContainerStyle>
+				<DataGrid.Columns>
+					<DataGridTextColumn Header="Signature" Binding="{Binding Signature}" Width="100" />
+					<DataGridTextColumn Header="Product Version" Binding="{Binding ProductVersion}" Width="220" />
+					<DataGridTextColumn Header="File Version" Binding="{Binding FileVersion}" Width="140" />
+					<DataGridTextColumn Header="File Path" Binding="{Binding FilePath}" Width="420" />
+				</DataGrid.Columns>
+			</DataGrid>
 		</DockPanel>
 	</DockPanel>
 </Window>
