@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         AllowDrop="True"
         Icon="PackageIcon.ico"
-        Title="Package Checker (0.4 RC)" Height="750" Width="1050" MinHeight="350" MinWidth="450">
+        Title="Package Checker (0.5 RC)" Height="750" Width="1050" MinHeight="350" MinWidth="450">
 	<DockPanel Margin="10">
 		<DockPanel Name="PathPanel" DockPanel.Dock="Top" Visibility="{Binding PathPanelVisibility}">
 			<Button Name="SelectionCancel" Margin="5" Width="30" Height="30" DockPanel.Dock="Right" Command="{Binding SetEmptyState}">✖</Button>
