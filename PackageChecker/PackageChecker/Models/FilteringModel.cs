@@ -57,7 +57,7 @@ namespace PackageChecker.Models
 			"\t!= - Not Equals operator;\n" +
 			"\t* - Value string.\n" +
 			"\nThe operator «{1}» represents any number of symbols.\n" +
-			"It is supported in the the beginning and in the end of the value string.\n" +
+			"It is supported in the beginning and in the end of the value string.\n" +
 			"\nIn case the value string isn't provided it is considered as an empty\n" +
 			"string value.\n";
 
