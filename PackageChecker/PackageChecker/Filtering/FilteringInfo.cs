@@ -64,6 +64,16 @@ namespace PackageChecker.Filtering
 
 		private bool ContainsWithPattern(string source, string value)
 		{
+			if (source == null)
+			{
+				source = string.Empty;
+			}
+
+			if (value == null)
+			{
+				value = string.Empty;
+			}
+
 			bool invertResult = false;
 			bool isStartsWith = false;
 			bool isEndsWith = false;
