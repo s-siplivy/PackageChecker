@@ -190,16 +190,16 @@ namespace PackageChecker.Models
 			foreach (string filePath in filePaths)
 			{
 				FileVersionInfo fileVersionInfo = FileVersionInfo.GetVersionInfo(filePath);
-				X509Certificate fileCertificate = null;
-				AssemblyName fileAssebbly = null;
+				string fileCertificate = string.Empty;
+				string fileAssebbly = string.Empty;
 				try
 				{
-					fileCertificate = X509Certificate.CreateFromSignedFile(filePath);
+					fileCertificate = X509Certificate.CreateFromSignedFile(filePath).Subject;
 				}
-				catch (CryptographicException) { }
+				catch { }
 				try
 				{
-					fileAssebbly = AssemblyName.GetAssemblyName(filePath);
+					fileAssebbly = AssemblyName.GetAssemblyName(filePath).FullName;
 				}
 				catch { }
 
@@ -208,8 +208,8 @@ namespace PackageChecker.Models
 					FilePath = FilesHelper.GetRelativePath(filePath, dirPath),
 					FileVersion = fileVersionInfo.FileVersion,
 					ProductVersion = fileVersionInfo.ProductVersion,
-					Signature = fileCertificate != null ? fileCertificate.Subject : string.Empty,
-					AssemblyName = fileAssebbly != null ? fileAssebbly.FullName : string.Empty,
+					Signature = fileCertificate,
+					AssemblyName = fileAssebbly,
 				});
 
 				currentItem++;
