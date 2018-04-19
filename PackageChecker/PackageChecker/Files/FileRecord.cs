@@ -10,6 +10,8 @@
 
 		public string ProductVersion { get; set; }
 
+		public string AssemblyName { get; set; }
+
 		public bool DoHighlight { get; set; }
 	}
 }

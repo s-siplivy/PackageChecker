@@ -11,6 +11,7 @@ namespace PackageChecker.Filtering
 		internal FilteringCondition FileVersionCondition { get; private set; }
 		internal FilteringCondition FilePathCondition { get; private set; }
 		internal FilteringCondition SignatureCondition { get; private set; }
+		internal FilteringCondition AssemblyCondition { get; private set; }
 
 		internal FilteringInfo()
 		{
@@ -18,6 +19,7 @@ namespace PackageChecker.Filtering
 			FileVersionCondition = new FilteringCondition();
 			FilePathCondition = new FilteringCondition();
 			SignatureCondition = new FilteringCondition();
+			AssemblyCondition = new FilteringCondition();
 		}
 
 		internal bool IsCorrectFileRecord(FileRecord record)
@@ -25,7 +27,8 @@ namespace PackageChecker.Filtering
 			return IsValuePassCondition(ProductVersionCondition, record.ProductVersion) &&
 				IsValuePassCondition(FileVersionCondition, record.FileVersion) &&
 				IsValuePassCondition(FilePathCondition, record.FilePath) &&
-				IsValuePassCondition(SignatureCondition, record.Signature);
+				IsValuePassCondition(SignatureCondition, record.Signature) &&
+				IsValuePassCondition(AssemblyCondition, record.AssemblyName);
 		}
 
 		internal bool DoHighlightRecord(FileRecord record)
@@ -33,7 +36,8 @@ namespace PackageChecker.Filtering
 			return IsHighlightCondition(ProductVersionCondition, record.ProductVersion) ||
 				IsHighlightCondition(FileVersionCondition, record.FileVersion) ||
 				IsHighlightCondition(FilePathCondition, record.FilePath) ||
-				IsHighlightCondition(SignatureCondition, record.Signature);
+				IsHighlightCondition(SignatureCondition, record.Signature) ||
+				IsHighlightCondition(AssemblyCondition, record.AssemblyName);
 		}
 
 		private bool IsValuePassCondition(FilteringCondition condition, string value)

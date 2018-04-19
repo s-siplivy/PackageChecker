@@ -53,6 +53,7 @@ namespace PackageChecker.Models
 			"\tfv - File Version property;\n" +
 			"\tfp - File Path property;\n" +
 			"\tsg - Signature property;\n" +
+			"\tan - Assembly name property;\n" +
 			"\t= - Equals operator;\n" +
 			"\t!= - Not Equals operator;\n" +
 			"\t* - Value string.\n" +
@@ -62,8 +63,8 @@ namespace PackageChecker.Models
 			"string value.\n";
 
 		private readonly Regex _regExpression;
-		private const string _regExpressionPattern = "^(in|hl){1}:(pv|fv|fp|sg){1}(=|!=){1}(.*)$";
-		private const string _regExpressionPatternSimplified = "(in|hl):(pv|fv|fp|sg)(=|!=)*";
+		private const string _regExpressionPattern = "^(in|hl){1}:(pv|fv|fp|sg|an){1}(=|!=){1}(.*)$";
+		private const string _regExpressionPatternSimplified = "(in|hl):(pv|fv|fp|sg|an)(=|!=)*";
 		private const string _hintMessage = "Format is «{0}». For more information, see help.";
 		#endregion //Private Properties
 
@@ -213,6 +214,9 @@ namespace PackageChecker.Models
 					break;
 				case "sg":
 					AddExpressionByCondition(info.SignatureCondition, conditionType, equalOperator, value);
+					break;
+				case "an":
+					AddExpressionByCondition(info.AssemblyCondition, conditionType, equalOperator, value);
 					break;
 				default:
 					throw new InvalidOperationException();

@@ -10,6 +10,7 @@ using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
@@ -190,11 +191,17 @@ namespace PackageChecker.Models
 			{
 				FileVersionInfo fileVersionInfo = FileVersionInfo.GetVersionInfo(filePath);
 				X509Certificate fileCertificate = null;
+				AssemblyName fileAssebbly = null;
 				try
 				{
 					fileCertificate = X509Certificate.CreateFromSignedFile(filePath);
 				}
 				catch (CryptographicException) { }
+				try
+				{
+					fileAssebbly = AssemblyName.GetAssemblyName(filePath);
+				}
+				catch { }
 
 				allFiles.Add(new FileRecord()
 				{
@@ -202,6 +209,7 @@ namespace PackageChecker.Models
 					FileVersion = fileVersionInfo.FileVersion,
 					ProductVersion = fileVersionInfo.ProductVersion,
 					Signature = fileCertificate != null ? fileCertificate.Subject : string.Empty,
+					AssemblyName = fileAssebbly != null ? fileAssebbly.FullName : string.Empty,
 				});
 
 				currentItem++;
