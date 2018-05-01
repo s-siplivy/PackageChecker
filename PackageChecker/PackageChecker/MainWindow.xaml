@@ -4,11 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PackageChecker"
+        xmlns:binding="clr-namespace:PackageChecker.BindingBase"
         xmlns:ViewModel="clr-namespace:PackageChecker.ViewModels"
         mc:Ignorable="d"
         AllowDrop="True"
         Icon="PackageIcon.ico"
         Title="Package Checker (0.5 RC)" Height="750" Width="1050" MinHeight="350" MinWidth="450">
+	<Window.Resources>
+		<binding:CopyToClipboard x:Key="CopyCommand"/>
+	</Window.Resources>
 	<DockPanel Margin="10">
 		<DockPanel Name="PathPanel" DockPanel.Dock="Top" Visibility="{Binding PathPanelVisibility}">
 			<Button Name="SelectionCancel" Margin="5" Width="30" Height="30" DockPanel.Dock="Right" Command="{Binding SetEmptyState}">✖</Button>
@@ -71,6 +75,20 @@
 		<DockPanel DockPanel.Dock="Top" Name="FilesPanel">
 			<TextBlock Name="InfoText" Margin="5" VerticalAlignment="Center" Text="{Binding Path=CurrentFilteringStatus}" DockPanel.Dock="Top"/>
 			<DataGrid Name="FilesList" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" ItemsSource="{Binding FileRecords}" AutoGenerateColumns="False" IsReadOnly="True" GridLinesVisibility="None">
+				<DataGrid.CellStyle>
+					<Style TargetType="{x:Type DataGridCell}">
+						<Setter Property="ContextMenu">
+							<Setter.Value>
+								<ContextMenu>
+									<MenuItem
+										Command="{StaticResource CopyCommand}"
+										CommandParameter="{Binding Path=Parent.PlacementTarget.Content.Text, RelativeSource={RelativeSource Self}}"
+										Header="{Binding Name, Source={StaticResource CopyCommand}}" />
+								</ContextMenu>
+							</Setter.Value>
+						</Setter>
+					</Style>
+				</DataGrid.CellStyle>
 				<DataGrid.ItemContainerStyle>
 					<Style TargetType="{x:Type DataGridRow}">
 						<Style.Triggers>
