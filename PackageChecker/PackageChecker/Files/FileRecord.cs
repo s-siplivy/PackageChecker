@@ -12,6 +12,8 @@
 
 		public string AssemblyName { get; set; }
 
+		public string ReferencesCheck { get; set; }
+
 		public bool DoHighlight { get; set; }
 	}
 }

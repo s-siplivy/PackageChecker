@@ -69,6 +69,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BindingBase\BindCommand.cs" />
+    <Compile Include="Files\AssembliesReferences.cs" />
+    <Compile Include="Files\AssemblyManager.cs" />
     <Compile Include="Files\FileRecord.cs" />
     <Compile Include="Files\FileSearchType.cs" />
     <Compile Include="Files\Serializer.cs" />

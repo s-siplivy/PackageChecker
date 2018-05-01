@@ -179,6 +179,8 @@ namespace PackageChecker.Models
 
 		private List<FileRecord> CollectFilesInfo(List<string> filePaths, string dirPath)
 		{
+			AssembliesReferences references = CollectAssembliesReferences(filePaths);
+
 			UpdateProgressText("Collecting files info");
 			IsProgressIndeterminate(false);
 
@@ -192,6 +194,7 @@ namespace PackageChecker.Models
 				FileVersionInfo fileVersionInfo = FileVersionInfo.GetVersionInfo(filePath);
 				string fileCertificate = string.Empty;
 				string fileAssebbly = string.Empty;
+				string referencesCheck = string.Empty;
 				try
 				{
 					fileCertificate = X509Certificate.CreateFromSignedFile(filePath).Subject;
@@ -199,7 +202,14 @@ namespace PackageChecker.Models
 				catch { }
 				try
 				{
-					fileAssebbly = AssemblyName.GetAssemblyName(filePath).FullName;
+					fileAssebbly = AssemblyManager.GetAssemblyName(filePath).FullName;
+				}
+				catch { }
+				try
+				{
+					string fileFolder = Path.GetDirectoryName(filePath);
+					Assembly assembly = AssemblyManager.GetAssemblyByFile(filePath);
+					referencesCheck = references.CheckAssembly(fileFolder, assembly);
 				}
 				catch { }
 
@@ -210,6 +220,7 @@ namespace PackageChecker.Models
 					ProductVersion = fileVersionInfo.ProductVersion,
 					Signature = fileCertificate,
 					AssemblyName = fileAssebbly,
+					ReferencesCheck = referencesCheck,
 				});
 
 				currentItem++;
@@ -217,6 +228,33 @@ namespace PackageChecker.Models
 			}
 
 			return allFiles;
+		}
+
+		private AssembliesReferences CollectAssembliesReferences(List<string> filePaths)
+		{
+			UpdateProgressText("Collecting references");
+			IsProgressIndeterminate(false);
+
+			AssembliesReferences references = new AssembliesReferences();
+
+			int currentItem = 0;
+			int allItemsCount = filePaths.Count;
+
+			foreach (string filePath in filePaths)
+			{
+				string folder = Path.GetDirectoryName(filePath);
+				try
+				{
+					AssemblyName fileAssembly = AssemblyManager.GetAssemblyName(filePath);
+					references.AddAssembly(folder, fileAssembly);
+				}
+				catch { }
+
+				currentItem++;
+				UpdateProgress(100 * currentItem / allItemsCount);
+			}
+
+			return references;
 		}
 
 		private List<string> DirSearch(string dirPath)
