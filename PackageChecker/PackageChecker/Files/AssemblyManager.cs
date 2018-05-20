@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -14,7 +15,14 @@ namespace PackageChecker.Files
 		internal static Assembly GetAssemblyByFile(string fileName)
 		{
 			AssemblyName assemblyName = GetAssemblyName(fileName);
-			return GetAssemblyByName(assemblyName);
+
+			Assembly assembly = GetFirstOrDefaultAssembly(assemblyName.FullName);
+			if (assembly == null)
+			{
+				assembly = Assembly.Load(File.ReadAllBytes(fileName));
+			}
+
+			return assembly;
 		}
 
 		internal static Assembly GetAssemblyByName(AssemblyName assemblyName)
