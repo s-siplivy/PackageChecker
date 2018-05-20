@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         AllowDrop="True"
         Icon="PackageIcon.ico"
-        Title="Package Checker (0.6 RC)" Height="750" Width="1050" MinHeight="350" MinWidth="450">
+        Title="Package Checker (0.7 RC)" Height="750" Width="1050" MinHeight="350" MinWidth="450">
 	<Window.Resources>
 		<binding:CopyToClipboard x:Key="CopyCommand"/>
 	</Window.Resources>
