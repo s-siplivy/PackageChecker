@@ -92,5 +92,11 @@ namespace PackageChecker.Files
 		{
 			return path.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
 		}
+
+		internal static bool IsPathAbsolute(string path)
+		{
+			return Path.IsPathRooted(path) &&
+				!Path.GetPathRoot(path).Equals(Path.DirectorySeparatorChar.ToString(), StringComparison.Ordinal);
+		}
 	}
 }
